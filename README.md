@@ -1,29 +1,44 @@
-# IntentGraph
+<div align="center">
+  <img src="docs/animations/intentgraph-hero.svg" alt="IntentGraph animated system map" width="100%" />
+  <h1>IntentGraph</h1>
+  <p>IntentGraph is a multi-tenant action OS that turns natural-language goals into trusted workflows.</p>
+  <p>
+    <a href="https://DARREN-2000.github.io/IntentGraph/">Live demo</a> |
+    <a href="https://github.com/DARREN-2000/IntentGraph/blob/main/docs/architecture/overview.md">Architecture</a> |
+    <a href="https://github.com/DARREN-2000/IntentGraph/blob/main/docs/runbooks/local-development.md">Runbook</a>
+  </p>
+</div>
 
-IntentGraph is a multi-tenant action OS that turns natural-language goals into trusted workflows.
+## Motion previews
 
-The project is built around one non-negotiable contract for side-effecting actions:
+![Workflow loop](docs/animations/workflow-loop.svg)
+![Trust layer](docs/animations/trust-layer.svg)
 
-1. `preview()` explains what will happen.
-2. `execute()` performs the side effect.
-3. `compensate()` rolls back where possible.
+<video src="docs/videos/intentgraph-dashboard-demo.webm" controls muted loop playsinline width="100%"></video>
 
-This repository includes the core workflow runtime, policy engine, connectors, control plane services, web dashboard, and a new CLI.
+## Why IntentGraph
+
+- Preview-first actions with policy gates and human approvals.
+- Typed schema validation for every LLM output.
+- Audit events for every workflow run and critical transition.
+- Multi-tenant memory scopes with strict ownership boundaries.
+- Demo-ready UI with live and simulated modes.
 
 ## Table of Contents
 
 1. [Product Principles](#product-principles)
-2. [Architecture at a Glance](#architecture-at-a-glance)
-3. [Monorepo Layout](#monorepo-layout)
-4. [Quick Start (Local)](#quick-start-local)
-5. [Web Dashboard](#web-dashboard)
-6. [CLI](#cli)
-7. [Screenshots and Demo Video](#screenshots-and-demo-video)
-8. [Build, Test, and Quality Gates](#build-test-and-quality-gates)
-9. [Deployment Paths](#deployment-paths)
-10. [Documentation Map](#documentation-map)
-11. [Troubleshooting](#troubleshooting)
-12. [Roadmap to Production-Ready](#roadmap-to-production-ready)
+2. [Experience](#experience)
+3. [Architecture at a Glance](#architecture-at-a-glance)
+4. [Monorepo Layout](#monorepo-layout)
+5. [Quick Start (Local)](#quick-start-local)
+6. [GitHub Pages Demo](#github-pages-demo)
+7. [Web Dashboard](#web-dashboard)
+8. [Screenshots and Demo Video](#screenshots-and-demo-video)
+9. [Build, Test, and Quality Gates](#build-test-and-quality-gates)
+10. [Deployment Paths](#deployment-paths)
+11. [Documentation Map](#documentation-map)
+12. [Troubleshooting](#troubleshooting)
+13. [Roadmap to Production-Ready](#roadmap-to-production-ready)
 
 ## Product Principles
 
@@ -36,15 +51,25 @@ IntentGraph follows these guarantees in design and implementation:
 5. Policy checks before risky execution.
 6. Memory scoped by ownership boundaries (personal, org, project, session).
 
+## Experience
+
+The web experience now includes:
+
+- Editorial hero with live or demo environment badges.
+- Intent studio with plan preview, confidence meter, and policy checks.
+- Demo playground with curated use cases and activity feed.
+- Action catalog filters, integrations gallery, and pricing preview.
+- Changelog and roadmap sections for product visibility.
+
 ## Architecture at a Glance
 
 ```text
 User Intent (Web / CLI)
-	-> Planner Service (intent -> workflow spec)
-	-> Executor Service (policy + approvals + runtime)
-	-> Action Plugins (preview/execute/compensate)
-	-> Audit Service (event trail + integrity)
-	-> Memory Service (scoped context)
+  -> Planner Service (intent -> workflow spec)
+  -> Executor Service (policy + approvals + runtime)
+  -> Action Plugins (preview/execute/compensate)
+  -> Audit Service (event trail + integrity)
+  -> Memory Service (scoped context)
 ```
 
 Core building blocks:
@@ -61,28 +86,28 @@ Core building blocks:
 
 ```text
 IntentGraph/
-	apps/
-		api/
-		web/
-		worker/
-		extension/
-	packages/
-		workflow-spec/
-		action-sdk/
-		connectors/
-		policy/
-		prompts/
-		shared/
-		ui/
-		cli/
-	services/
-		planner/
-		executor/
-		approvals/
-		audit/
-		memory/
-	docs/
-	infra/
+  apps/
+    api/
+    web/
+    worker/
+    extension/
+  packages/
+    workflow-spec/
+    action-sdk/
+    connectors/
+    policy/
+    prompts/
+    shared/
+    ui/
+    cli/
+  services/
+    planner/
+    executor/
+    approvals/
+    audit/
+    memory/
+  docs/
+  infra/
 ```
 
 ## Quick Start (Local)
@@ -128,7 +153,14 @@ npm run dev
 
 By default the dashboard is available on `http://localhost:3000`.
 
-### 6) Health checks
+### 6) Run demo mode locally
+
+```bash
+cd apps/web
+NEXT_PUBLIC_DEMO_MODE=true npm run dev
+```
+
+### 7) Health checks
 
 ```bash
 curl http://localhost:3001/healthz
@@ -136,15 +168,31 @@ curl http://localhost:3001/readyz
 curl http://localhost:3001/api/v1/version
 ```
 
+## GitHub Pages Demo
+
+The web UI deploys as a static demo to GitHub Pages via the workflow in `.github/workflows/pages.yml`.
+
+- Demo URL: `https://DARREN-2000.github.io/IntentGraph/`
+- Demo mode is enabled via `NEXT_PUBLIC_DEMO_MODE=true` and `NEXT_PUBLIC_DEPLOY_ENV=github-pages`.
+
+To export locally:
+
+```bash
+cd apps/web
+GITHUB_PAGES=true NEXT_PUBLIC_DEMO_MODE=true NEXT_PUBLIC_DEPLOY_ENV=github-pages npm run build
+GITHUB_PAGES=true NEXT_PUBLIC_DEMO_MODE=true NEXT_PUBLIC_DEPLOY_ENV=github-pages npm run export
+```
+
 ## Web Dashboard
 
-The dashboard currently supports:
+The dashboard supports:
 
 1. Natural-language intent input.
 2. Workflow planning with confidence score.
 3. Workflow execution from the queue.
 4. Approval queue for gated/risky actions.
-5. Action catalog visibility.
+5. Action catalog visibility and filtering.
+6. Demo playground and activity feed.
 
 Primary implementation entrypoint:
 
@@ -157,47 +205,6 @@ API handlers used by the dashboard:
 - `apps/web/src/pages/api/workflows/index.ts`
 - `apps/web/src/pages/api/approvals/index.ts`
 - `apps/web/src/pages/api/approvals/[approvalId]/approve.ts`
-
-## CLI
-
-The repository now includes a dedicated CLI workspace package at `packages/cli`.
-
-### Build CLI
-
-```bash
-npm run cli:build
-```
-
-### Run CLI (workspace shortcut)
-
-```bash
-npm run cli -- help
-```
-
-### Commands
-
-```text
-intentgraph help
-intentgraph actions list
-intentgraph plan --intent "Create an issue in github repo: my-repo"
-intentgraph run --intent "Create a pull request in github repo: my-repo" --auto-approve
-intentgraph doctor
-```
-
-### JSON output mode
-
-All core commands support `--json` or `-j` for machine-readable output.
-
-```bash
-npm run cli -- plan --intent "Send an email to dev@example.com" --json
-```
-
-### CLI implementation notes
-
-- `plan` compiles intent into a workflow proposal.
-- `run` plans and executes in one command.
-- `run --auto-approve` auto-approves local demo gates.
-- `doctor` validates environment and local endpoint reachability.
 
 ## Screenshots and Demo Video
 
@@ -255,8 +262,14 @@ make cli ARGS="help"
 - `.github/workflows/docker-build.yml`
 - `.github/workflows/helm-lint.yml`
 - `.github/workflows/release.yml`
+- `.github/workflows/pages.yml`
 
 ## Deployment Paths
+
+### GitHub Pages (static demo)
+
+- Workflow: `.github/workflows/pages.yml`
+- Output: `apps/web/out`
 
 ### Docker Compose (local integration)
 
@@ -315,9 +328,9 @@ Run package-level tests when debugging:
 
 ```bash
 cd packages/workflow-spec && npx jest --ci
-cd packages/action-sdk && npx jest --ci
-cd packages/policy && npx jest --ci
-cd packages/connectors && npx jest --ci
+cd ../action-sdk && npx jest --ci
+cd ../policy && npx jest --ci
+cd ../connectors && npx jest --ci
 ```
 
 ### 3) Dashboard API route errors

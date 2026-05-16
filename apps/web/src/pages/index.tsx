@@ -531,15 +531,17 @@ const RISKY_KEYWORDS = ['delete', 'spend', 'provision', 'email', 'slack', 'send'
 export default function Dashboard() {
   const demoModeBuild = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
   const [runtimeApiBase, setRuntimeApiBase] = useState<string | null>(() =>
-    typeof window !== 'undefined'
-      ? window.localStorage.getItem('intentgraph_api_base')
-      : null
+    typeof window !== 'undefined' ? window.localStorage.getItem('intentgraph_api_base') : null
   );
   const [runtimeApiKey, setRuntimeApiKey] = useState<string | null>(() =>
     typeof window !== 'undefined' ? window.localStorage.getItem('intentgraph_api_key') : null
   );
   const [showSettings, setShowSettings] = useState(false);
-  const demoMode = demoModeBuild && !runtimeApiBase;
+  const [encryptedPresent, setEncryptedPresent] = useState(false);
+  const [encryptBeforeSave, setEncryptBeforeSave] = useState(false);
+  const [passphrase, setPassphrase] = useState('');
+  const [unlockPassphrase, setUnlockPassphrase] = useState('');
+  const demoMode = demoModeBuild && !runtimeApiBase && !encryptedPresent;
 
   const getApiBase = () => runtimeApiBase || process.env.NEXT_PUBLIC_API_BASE || '';
   const getApiKey = () => runtimeApiKey || process.env.NEXT_PUBLIC_API_KEY || '';
@@ -555,6 +557,53 @@ export default function Dashboard() {
       if (key === '') window.localStorage.removeItem('intentgraph_api_key');
       else window.localStorage.setItem('intentgraph_api_key', key);
       setRuntimeApiKey(key || null);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const blob = window.localStorage.getItem('intentgraph_api_config');
+    if (blob) setEncryptedPresent(true);
+  }, []);
+
+  const handleSaveSettings = async () => {
+    if (encryptBeforeSave && passphrase) {
+      try {
+        const payload = JSON.stringify({ base: runtimeApiBase || '', key: runtimeApiKey || '' });
+        // dynamic import to avoid SSR issues
+        const { encryptConfig } = await import('../lib/secureConfig');
+        const blob = await encryptConfig(payload, passphrase);
+        window.localStorage.setItem('intentgraph_api_config', blob);
+        window.localStorage.removeItem('intentgraph_api_base');
+        window.localStorage.removeItem('intentgraph_api_key');
+        setRuntimeApiBase(null);
+        setRuntimeApiKey(null);
+        setEncryptedPresent(true);
+      } catch (err) {
+        setFeedback({ tone: 'error', text: `Encryption failed: ${err instanceof Error ? err.message : String(err)}` });
+      }
+    } else {
+      saveRuntimeConfig(runtimeApiBase || null, runtimeApiKey || null);
+      window.localStorage.removeItem('intentgraph_api_config');
+      setEncryptedPresent(false);
+    }
+    setShowSettings(false);
+  };
+
+  const handleUnlock = async () => {
+    try {
+      const blob = window.localStorage.getItem('intentgraph_api_config');
+      if (!blob) throw new Error('No encrypted config found');
+      const { decryptConfig } = await import('../lib/secureConfig');
+      const plain = await decryptConfig(blob, unlockPassphrase);
+      const parsed = JSON.parse(plain);
+      setRuntimeApiBase(parsed.base || null);
+      setRuntimeApiKey(parsed.key || null);
+      setEncryptedPresent(false);
+      setShowSettings(false);
+      setFeedback({ tone: 'success', text: 'Configuration unlocked in browser session.' });
+    } catch (err) {
+      setFeedback({ tone: 'error', text: `Unlock failed: ${err instanceof Error ? err.message : String(err)}` });
     }
   };
 

@@ -40,14 +40,21 @@ jobs:
       - name: Prepare export dir
         run: |
           set -e
-          # Next 14 uses `output: export` in next.config.js — build writes to .next/output/export
-          export_dir="apps/web/.next/output/export"
-          if [ -d "$export_dir" ]; then
-            rm -rf apps/web/out
-            mkdir -p apps/web/out
-            cp -r "$export_dir"/* apps/web/out/
-          else
-            echo "Export directory not found: $export_dir"
+          # Try multiple possible Next export locations (compat with different Next versions/configs)
+          candidates=("apps/web/.next/output/export" "apps/web/.next/export" "apps/web/out")
+          found=0
+          for export_dir in "${candidates[@]}"; do
+            if [ -d "$export_dir" ]; then
+              rm -rf apps/web/out
+              mkdir -p apps/web/out
+              cp -r "$export_dir"/* apps/web/out/
+              found=1
+              echo "Copied export from $export_dir"
+              break
+            fi
+          done
+          if [ "$found" -ne 1 ]; then
+            echo "Export directory not found in any candidate locations"
             ls -la apps/web/.next || true
             exit 1
           fi

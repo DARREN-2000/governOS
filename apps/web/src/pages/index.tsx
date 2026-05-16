@@ -529,7 +529,43 @@ const DEMO_PLAN_SUMMARY: PlanSummary = {
 const RISKY_KEYWORDS = ['delete', 'spend', 'provision', 'email', 'slack', 'send', 'payment'];
 
 export default function Dashboard() {
-  const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  const demoModeBuild = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  const [runtimeApiBase, setRuntimeApiBase] = useState<string | null>(() =>
+    typeof window !== 'undefined'
+      ? window.localStorage.getItem('intentgraph_api_base')
+      : null
+  );
+  const [runtimeApiKey, setRuntimeApiKey] = useState<string | null>(() =>
+    typeof window !== 'undefined' ? window.localStorage.getItem('intentgraph_api_key') : null
+  );
+  const [showSettings, setShowSettings] = useState(false);
+  const demoMode = demoModeBuild && !runtimeApiBase;
+
+  const getApiBase = () => runtimeApiBase || process.env.NEXT_PUBLIC_API_BASE || '';
+  const getApiKey = () => runtimeApiKey || process.env.NEXT_PUBLIC_API_KEY || '';
+
+  const saveRuntimeConfig = (base?: string | null, key?: string | null) => {
+    if (typeof window === 'undefined') return;
+    if (base != null) {
+      if (base === '') window.localStorage.removeItem('intentgraph_api_base');
+      else window.localStorage.setItem('intentgraph_api_base', base);
+      setRuntimeApiBase(base || null);
+    }
+    if (key != null) {
+      if (key === '') window.localStorage.removeItem('intentgraph_api_key');
+      else window.localStorage.setItem('intentgraph_api_key', key);
+      setRuntimeApiKey(key || null);
+    }
+  };
+
+  const apiFetch = async (path: string, opts: RequestInit = {}) => {
+    const apiBase = getApiBase();
+    const url = path.startsWith('/api/') && apiBase ? `${apiBase.replace(/\/$/, '')}${path}` : path;
+    const headers = new Headers(opts.headers || {});
+    const apiKey = getApiKey();
+    if (apiKey) headers.set('x-api-key', apiKey);
+    return fetch(url, { ...opts, headers });
+  };
   const [intent, setIntent] = useState('');
   const [workflows, setWorkflows] = useState<Workflow[]>(() => (demoMode ? DEMO_WORKFLOWS : []));
   const [approvals, setApprovals] = useState<Approval[]>(() => (demoMode ? DEMO_APPROVALS : []));
@@ -575,8 +611,8 @@ export default function Dashboard() {
 
       try {
         const [workflowResponse, approvalResponse] = await Promise.all([
-          fetch('/api/workflows'),
-          fetch('/api/approvals'),
+          apiFetch('/api/workflows'),
+          apiFetch('/api/approvals'),
         ]);
 
         if (workflowResponse.ok) {
@@ -649,7 +685,7 @@ export default function Dashboard() {
     }
 
     try {
-      const response = await fetch('/api/plan', {
+      const response = await apiFetch('/api/plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ intent: normalizedIntent }),
@@ -739,7 +775,7 @@ export default function Dashboard() {
     }
 
     try {
-      const response = await fetch('/api/execute', {
+      const response = await apiFetch('/api/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ workflow: { id: workflowId } }),
@@ -810,7 +846,7 @@ export default function Dashboard() {
     }
 
     try {
-      const response = await fetch(`/api/approvals/${approvalId}/approve`, {
+      const response = await apiFetch(`/api/approvals/${approvalId}/approve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ approvalId, approverId: 'current-user' }),

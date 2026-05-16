@@ -915,6 +915,14 @@ export default function Dashboard() {
           <button type="button" className="primaryButton" onClick={scrollToStudio}>
             Launch studio
           </button>
+          <button
+            type="button"
+            className="ghostButton"
+            onClick={() => setShowSettings((s) => !s)}
+            aria-expanded={showSettings}
+          >
+            Connect API
+          </button>
           <a
             className="ghostButton"
             href="https://github.com/DARREN-2000/IntentGraph/blob/main/docs/architecture/overview.md"
@@ -1415,6 +1423,60 @@ export default function Dashboard() {
           </a>
         </div>
       </footer>
+
+      {showSettings ? (
+        <div className="settingsModal" role="dialog" aria-modal="true">
+          <div className="settingsCard">
+            <h3>Runtime API configuration</h3>
+            <p className="hintText">Provide an external API base URL to connect the static demo to a live control plane. API key will be sent as `x-api-key` header.</p>
+            <label className="inputLabel">API Base URL</label>
+            <input
+              type="text"
+              value={runtimeApiBase || ''}
+              onChange={(e) => setRuntimeApiBase(e.target.value)}
+              placeholder="https://api.example.com"
+              className="intentInput"
+            />
+            <label className="inputLabel">API Key</label>
+            <input
+              type="text"
+              value={runtimeApiKey || ''}
+              onChange={(e) => setRuntimeApiKey(e.target.value)}
+              placeholder="optional secret (exposed in browser)"
+              className="intentInput"
+            />
+            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+              <button
+                type="button"
+                className="primaryButton"
+                onClick={() => {
+                  saveRuntimeConfig(runtimeApiBase || null, runtimeApiKey || null);
+                  setShowSettings(false);
+                }}
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                className="secondaryButton"
+                onClick={() => setShowSettings(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="ghostButton"
+                onClick={() => {
+                  saveRuntimeConfig('', '');
+                  setShowSettings(false);
+                }}
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <style jsx global>{`
         :root {

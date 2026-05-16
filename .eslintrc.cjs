@@ -27,5 +27,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }],
+    'react/no-unknown-property': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
   },
 };

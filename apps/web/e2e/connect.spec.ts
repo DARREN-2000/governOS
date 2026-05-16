@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('connect flow saves API base to localStorage', async ({ page, baseURL }) => {
+test('connect flow saves API base to localStorage', async ({ page }) => {
   await page.goto('/');
   await page.click('button:has-text("Connect API")');
   await page.fill('input[placeholder="https://api.example.com"]', 'https://api.test.local');

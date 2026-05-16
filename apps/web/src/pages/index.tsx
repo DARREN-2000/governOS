@@ -1478,51 +1478,94 @@ export default function Dashboard() {
           <div className="settingsCard">
             <h3>Runtime API configuration</h3>
             <p className="hintText">Provide an external API base URL to connect the static demo to a live control plane. API key will be sent as `x-api-key` header.</p>
-            <label className="inputLabel">API Base URL</label>
-            <input
-              type="text"
-              value={runtimeApiBase || ''}
-              onChange={(e) => setRuntimeApiBase(e.target.value)}
-              placeholder="https://api.example.com"
-              className="intentInput"
-            />
-            <label className="inputLabel">API Key</label>
-            <input
-              type="text"
-              value={runtimeApiKey || ''}
-              onChange={(e) => setRuntimeApiKey(e.target.value)}
-              placeholder="optional secret (exposed in browser)"
-              className="intentInput"
-            />
-            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-              <button
-                type="button"
-                className="primaryButton"
-                onClick={() => {
-                  saveRuntimeConfig(runtimeApiBase || null, runtimeApiKey || null);
-                  setShowSettings(false);
-                }}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="secondaryButton"
-                onClick={() => setShowSettings(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="ghostButton"
-                onClick={() => {
-                  saveRuntimeConfig('', '');
-                  setShowSettings(false);
-                }}
-              >
-                Clear
-              </button>
-            </div>
+
+            {encryptedPresent ? (
+              <div>
+                <p className="hintText">An encrypted configuration is stored in this browser. Unlock it to use the config for this session.</p>
+                <label className="inputLabel">Passphrase</label>
+                <input
+                  type="password"
+                  value={unlockPassphrase}
+                  onChange={(e) => setUnlockPassphrase(e.target.value)}
+                  placeholder="Enter passphrase to unlock"
+                  className="intentInput"
+                />
+                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                  <button type="button" className="primaryButton" onClick={() => void handleUnlock()}>
+                    Unlock
+                  </button>
+                  <button type="button" className="ghostButton" onClick={() => {
+                    window.localStorage.removeItem('intentgraph_api_config');
+                    setEncryptedPresent(false);
+                    setShowSettings(false);
+                  }}>
+                    Remove Encrypted Config
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <label className="inputLabel">API Base URL</label>
+                <input
+                  type="text"
+                  value={runtimeApiBase || ''}
+                  onChange={(e) => setRuntimeApiBase(e.target.value)}
+                  placeholder="https://api.example.com"
+                  className="intentInput"
+                />
+                <label className="inputLabel">API Key</label>
+                <input
+                  type="text"
+                  value={runtimeApiKey || ''}
+                  onChange={(e) => setRuntimeApiKey(e.target.value)}
+                  placeholder="optional secret (exposed in browser)"
+                  className="intentInput"
+                />
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                  <input type="checkbox" checked={encryptBeforeSave} onChange={(e) => setEncryptBeforeSave(e.target.checked)} />
+                  Encrypt in browser before saving
+                </label>
+                {encryptBeforeSave ? (
+                  <>
+                    <label className="inputLabel">Passphrase</label>
+                    <input
+                      type="password"
+                      value={passphrase}
+                      onChange={(e) => setPassphrase(e.target.value)}
+                      placeholder="Choose a passphrase"
+                      className="intentInput"
+                    />
+                  </>
+                ) : null}
+
+                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                  <button
+                    type="button"
+                    className="primaryButton"
+                    onClick={() => void handleSaveSettings()}
+                  >
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="secondaryButton"
+                    onClick={() => setShowSettings(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="ghostButton"
+                    onClick={() => {
+                      saveRuntimeConfig('', '');
+                      setShowSettings(false);
+                    }}
+                  >
+                    Clear
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       ) : null}

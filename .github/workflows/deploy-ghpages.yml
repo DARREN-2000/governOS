@@ -57,19 +57,13 @@ jobs:
           done
 
           if [ "$found" -ne 1 ]; then
-            # If Next didn't produce a formal export, try to assemble a static site from .next
             if [ -d "apps/web/.next/server/pages" ]; then
               echo "No formal export found; assembling static output from .next/server/pages and .next/static"
               rm -rf apps/web/out
               mkdir -p apps/web/out
 
-              # Copy HTML pages preserving directory structure
-              find apps/web/.next/server/pages -type f -name '*.html' | while read -r f; do
-                rel_path="${f#apps/web/.next/server/pages/}"
-                dest="apps/web/out/$rel_path"
-                mkdir -p "$(dirname "$dest")"
-                cp "$f" "$dest"
-              done
+              # Use rsync to copy HTML files while preserving directory structure
+              rsync -a --prune-empty-dirs --include '*/' --include '*.html' --exclude '*' apps/web/.next/server/pages/ apps/web/out/
 
               # Copy _next static assets so HTML can reference them
               if [ -d "apps/web/.next/static" ]; then
@@ -77,7 +71,6 @@ jobs:
                 cp -r apps/web/.next/static apps/web/out/_next/
               fi
 
-              # If there are any exported static files under .next/static/media or similar, ensure they're included
               found=1
               echo "Assembled export in apps/web/out"
             else
@@ -86,6 +79,11 @@ jobs:
               exit 1
             fi
           fi
+
+      - name: Debug: list export contents
+        run: |
+          echo "Listing apps/web/out"
+          ls -la apps/web/out || echo "apps/web/out does not exist or is empty"
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3

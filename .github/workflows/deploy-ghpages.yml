@@ -1,0 +1,69 @@
+name: Deploy Web to gh-pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES: true
+      NEXT_PUBLIC_DEMO_MODE: false
+      NEXT_PUBLIC_DEPLOY_ENV: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build workspace (packages + apps)
+        run: npm run build
+
+      - name: Export web (attempt)
+        run: |
+          set -e
+          cd apps/web
+          # Use the package export script; allow failure here because build may produce different export dirs
+          GITHUB_PAGES=true NEXT_PUBLIC_DEMO_MODE=true NEXT_PUBLIC_DEPLOY_ENV=github-pages npm run export || true
+
+      - name: Prepare export dir
+        run: |
+          set -e
+          candidates=("apps/web/.next/output/export" "apps/web/.next/export" "apps/web/out")
+          found=0
+          for export_dir in "${candidates[@]}"; do
+            if [ -d "$export_dir" ]; then
+              rm -rf apps/web/out
+              mkdir -p apps/web/out
+              cp -r "$export_dir"/* apps/web/out/
+              found=1
+              echo "Copied export from $export_dir"
+              break
+            fi
+          done
+          if [ "$found" -ne 1 ]; then
+            echo "Export directory not found in any candidate locations"
+            ls -la apps/web/.next || true
+            exit 1
+          fi
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/web/out
+          publish_branch: gh-pages

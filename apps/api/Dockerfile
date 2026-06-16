@@ -12,6 +12,11 @@ COPY packages/action-sdk/package.json packages/action-sdk/
 COPY packages/policy/package.json packages/policy/
 COPY packages/shared/package.json packages/shared/
 COPY packages/connectors/package.json packages/connectors/
+COPY services/approvals/package.json services/approvals/
+COPY services/audit/package.json services/audit/
+COPY services/executor/package.json services/executor/
+COPY services/memory/package.json services/memory/
+COPY services/planner/package.json services/planner/
 COPY apps/api/package.json apps/api/
 
 # Install dependencies
@@ -23,14 +28,15 @@ COPY packages/action-sdk/ packages/action-sdk/
 COPY packages/policy/ packages/policy/
 COPY packages/shared/ packages/shared/
 COPY packages/connectors/ packages/connectors/
+COPY services/approvals/ services/approvals/
+COPY services/audit/ services/audit/
+COPY services/executor/ services/executor/
+COPY services/memory/ services/memory/
+COPY services/planner/ services/planner/
 COPY apps/api/ apps/api/
 
 # Build packages in dependency order
-RUN npx tsc -p packages/workflow-spec/tsconfig.build.json && \
-    npx tsc -p packages/action-sdk/tsconfig.build.json && \
-    npx tsc -p packages/policy/tsconfig.build.json && \
-    npx tsc -p packages/shared/tsconfig.build.json && \
-    npx tsc -p apps/api/tsconfig.build.json
+RUN npx turbo run build --filter=@intentgraph/api
 
 # ---- Production Stage ----
 FROM node:20-alpine AS production
@@ -50,6 +56,16 @@ COPY --from=builder /app/packages/policy/dist packages/policy/dist
 COPY --from=builder /app/packages/policy/package.json packages/policy/
 COPY --from=builder /app/packages/shared/dist packages/shared/dist
 COPY --from=builder /app/packages/shared/package.json packages/shared/
+COPY --from=builder /app/services/approvals/dist services/approvals/dist
+COPY --from=builder /app/services/approvals/package.json services/approvals/
+COPY --from=builder /app/services/audit/dist services/audit/dist
+COPY --from=builder /app/services/audit/package.json services/audit/
+COPY --from=builder /app/services/executor/dist services/executor/dist
+COPY --from=builder /app/services/executor/package.json services/executor/
+COPY --from=builder /app/services/memory/dist services/memory/dist
+COPY --from=builder /app/services/memory/package.json services/memory/
+COPY --from=builder /app/services/planner/dist services/planner/dist
+COPY --from=builder /app/services/planner/package.json services/planner/
 COPY --from=builder /app/apps/api/dist apps/api/dist
 COPY --from=builder /app/apps/api/package.json apps/api/
 

@@ -20,11 +20,7 @@ COPY packages/shared/ packages/shared/
 COPY packages/connectors/ packages/connectors/
 COPY apps/worker/ apps/worker/
 
-RUN npx tsc -p packages/workflow-spec/tsconfig.build.json && \
-    npx tsc -p packages/action-sdk/tsconfig.build.json && \
-    npx tsc -p packages/policy/tsconfig.build.json && \
-    npx tsc -p packages/shared/tsconfig.build.json && \
-    npx tsc -p apps/worker/tsconfig.build.json
+RUN npx turbo run build --filter=@intentgraph/worker
 
 # ---- Production Stage ----
 FROM node:20-alpine AS production

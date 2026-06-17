@@ -8,6 +8,7 @@
  * - Serve the web dashboard API
  */
 
+import { randomUUID } from 'crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'http';
 import { getControlPlane } from './control-plane';
 
@@ -67,7 +68,7 @@ function getRequestId(req: IncomingMessage): string {
     return header.trim();
   }
 
-  return `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  return `req_${Date.now()}_${randomUUID().split('-')[0]}`;
 }
 
 function resolveUserId(req: IncomingMessage, bodyUserId?: string): string {
@@ -127,11 +128,7 @@ function getUrl(req: IncomingMessage): URL {
   return new URL(req.url || '/', `http://${host}`);
 }
 
-function methodNotAllowed(
-  res: ServerResponse,
-  requestId: string,
-  allowedMethod: string,
-): void {
+function methodNotAllowed(res: ServerResponse, requestId: string, allowedMethod: string): void {
   res.setHeader('Allow', allowedMethod);
   sendError(res, 405, requestId, 'Method not allowed');
 }
@@ -185,7 +182,12 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise
       }
 
       const result = await controlPlane.planIntent(userId, intent);
-      sendOk(res, result.success ? 200 : 400, requestId, result as unknown as Record<string, unknown>);
+      sendOk(
+        res,
+        result.success ? 200 : 400,
+        requestId,
+        result as unknown as Record<string, unknown>,
+      );
       return;
     }
 

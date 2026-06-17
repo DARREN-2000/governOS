@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface BucketState {
@@ -12,7 +13,7 @@ export function getRequestId(req: NextApiRequest): string {
   if (typeof header === 'string' && header.trim()) {
     return header.trim();
   }
-  return `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  return `req_${Date.now()}_${randomUUID().split('-')[0]}`;
 }
 
 export function resolveUserId(req: NextApiRequest, bodyUserId?: string): string {

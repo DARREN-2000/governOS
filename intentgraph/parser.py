@@ -42,92 +42,97 @@ class CodeParser:
             filepath=filepath,
         ))
 
-        # We'll use an AST visitor to extract classes, functions, and imports
-        class DependencyVisitor(ast.NodeVisitor):
-            def __init__(self) -> None:
-                self.current_parent = file_id
-
-            def visit_Import(self, node: ast.Import) -> None:
-                for alias in node.names:
-                    import_id = f"import_{alias.name}"
-                    nodes.append(Node(
-                        id=import_id,
-                        name=alias.name,
-                        type="import",
-                        filepath=filepath,
-                        start_line=node.lineno,
-                        end_line=node.end_lineno
-                    ))
-                    edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
-                self.generic_visit(node)
-
-            def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
-                module = node.module or ""
-                for alias in node.names:
-                    name = f"{module}.{alias.name}" if module else alias.name
-                    import_id = f"import_{name}"
-                    nodes.append(Node(
-                        id=import_id,
-                        name=name,
-                        type="import",
-                        filepath=filepath,
-                        start_line=node.lineno,
-                        end_line=node.end_lineno
-                    ))
-                    edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
-                self.generic_visit(node)
-
-            def visit_ClassDef(self, node: ast.ClassDef) -> None:
-                class_id = f"{filepath}:{node.name}"
-                docstring = ast.get_docstring(node)
-                nodes.append(Node(
-                    id=class_id,
-                    name=node.name,
-                    type="class",
-                    filepath=filepath,
-                    start_line=node.lineno,
-                    end_line=node.end_lineno,
-                    docstring=docstring
-                ))
-                edges.append(Edge(source=self.current_parent, target=class_id, type="contains"))
-
-                old_parent = self.current_parent
-                self.current_parent = class_id
-                self.generic_visit(node)
-                self.current_parent = old_parent
-
-            def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
-                func_id = f"{self.current_parent}:{node.name}"
-                docstring = ast.get_docstring(node)
-                nodes.append(Node(
-                    id=func_id,
-                    name=node.name,
-                    type="function",
-                    filepath=filepath,
-                    start_line=node.lineno,
-                    end_line=node.end_lineno,
-                    docstring=docstring
-                ))
-                edges.append(Edge(source=self.current_parent, target=func_id, type="contains"))
-
-                old_parent = self.current_parent
-                self.current_parent = func_id
-                self.generic_visit(node)
-                self.current_parent = old_parent
-
-            def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
-                self.visit_FunctionDef(node) # type: ignore
-
-            def visit_Call(self, node: ast.Call) -> None:
-                if isinstance(node.func, ast.Name):
-                    target_name = node.func.id
-                    edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
-                elif isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
-                    target_name = f"{node.func.value.id}.{node.func.attr}"
-                    edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
-                self.generic_visit(node)
-
-        visitor = DependencyVisitor()
+        # We'll use an AST visitor to extract classes, functions, and imports.
+        # Extracted out to _DependencyVisitor to avoid overhead of creating class dynamically on every call to `parse_file`.
+        visitor = _DependencyVisitor(file_id, filepath, nodes, edges)
         visitor.visit(tree)
 
         return nodes, edges
+
+class _DependencyVisitor(ast.NodeVisitor):
+    def __init__(self, file_id: str, filepath: str, nodes: List[Node], edges: List[Edge]) -> None:
+        self.file_id = file_id
+        self.filepath = filepath
+        self.nodes = nodes
+        self.edges = edges
+        self.current_parent = file_id
+
+    def visit_Import(self, node: ast.Import) -> None:
+        for alias in node.names:
+            import_id = f"import_{alias.name}"
+            self.nodes.append(Node(
+                id=import_id,
+                name=alias.name,
+                type="import",
+                filepath=self.filepath,
+                start_line=node.lineno,
+                end_line=node.end_lineno
+            ))
+            self.edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+        module = node.module or ""
+        for alias in node.names:
+            name = f"{module}.{alias.name}" if module else alias.name
+            import_id = f"import_{name}"
+            self.nodes.append(Node(
+                id=import_id,
+                name=name,
+                type="import",
+                filepath=self.filepath,
+                start_line=node.lineno,
+                end_line=node.end_lineno
+            ))
+            self.edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        class_id = f"{self.filepath}:{node.name}"
+        docstring = ast.get_docstring(node)
+        self.nodes.append(Node(
+            id=class_id,
+            name=node.name,
+            type="class",
+            filepath=self.filepath,
+            start_line=node.lineno,
+            end_line=node.end_lineno,
+            docstring=docstring
+        ))
+        self.edges.append(Edge(source=self.current_parent, target=class_id, type="contains"))
+
+        old_parent = self.current_parent
+        self.current_parent = class_id
+        self.generic_visit(node)
+        self.current_parent = old_parent
+
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+        func_id = f"{self.current_parent}:{node.name}"
+        docstring = ast.get_docstring(node)
+        self.nodes.append(Node(
+            id=func_id,
+            name=node.name,
+            type="function",
+            filepath=self.filepath,
+            start_line=node.lineno,
+            end_line=node.end_lineno,
+            docstring=docstring
+        ))
+        self.edges.append(Edge(source=self.current_parent, target=func_id, type="contains"))
+
+        old_parent = self.current_parent
+        self.current_parent = func_id
+        self.generic_visit(node)
+        self.current_parent = old_parent
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
+        self.visit_FunctionDef(node) # type: ignore
+
+    def visit_Call(self, node: ast.Call) -> None:
+        if isinstance(node.func, ast.Name):
+            target_name = node.func.id
+            self.edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
+        elif isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
+            target_name = f"{node.func.value.id}.{node.func.attr}"
+            self.edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
+        self.generic_visit(node)

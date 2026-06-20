@@ -15,6 +15,21 @@ class CodeParser:
         nodes: List[Node] = []
         edges: List[Edge] = []
 
+        # Sentinel: Security enhancements for safe file reading
+        if not os.path.isfile(filepath):
+            logger.warning(f"Path is not a regular file or does not exist: {filepath}")
+            return nodes, edges
+
+        try:
+            file_size = os.path.getsize(filepath)
+            # Limit file size to 10MB to prevent memory exhaustion DoS
+            if file_size > 10 * 1024 * 1024:
+                logger.warning(f"File {filepath} exceeds the 10MB size limit (size: {file_size} bytes)")
+                return nodes, edges
+        except OSError:
+            logger.error(f"Failed to stat file {filepath}")
+            return nodes, edges
+
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()

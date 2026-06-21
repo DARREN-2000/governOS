@@ -15,6 +15,20 @@ class CodeParser:
         nodes: List[Node] = []
         edges: List[Edge] = []
 
+        # Ensure the path is a regular file to prevent reading device files
+        if not os.path.isfile(filepath):
+            logger.error(f"Failed to read file {filepath}: Not a regular file")
+            return nodes, edges
+
+        MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+        try:
+            if os.path.getsize(filepath) > MAX_FILE_SIZE:
+                logger.error(f"Failed to read file {filepath}: File exceeds maximum size of 10MB")
+                return nodes, edges
+        except OSError as e:
+            logger.error(f"Failed to stat file {filepath}: {e}")
+            return nodes, edges
+
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()

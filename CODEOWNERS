@@ -1,0 +1,19 @@
+# GovernOS CODEOWNERS
+
+# Global owners
+*       @organization/core-maintainers
+
+# Frontend Web App
+/apps/web/      @organization/frontend-team
+
+# Backend Python Core
+/intentgraph/   @organization/backend-team
+/tests/         @organization/backend-team
+
+# Documentation
+/docs/          @organization/dx-team
+README.md       @organization/dx-team
+
+# Infrastructure
+/infra/         @organization/devops-team
+.github/        @organization/devops-team

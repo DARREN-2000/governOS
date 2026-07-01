@@ -2,27 +2,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "intentgraph.fullname" . }}-worker
+  name: {{ include "governos.fullname" . }}-worker
   labels:
-    {{- include "intentgraph.labels" . | nindent 4 }}
+    {{- include "governos.labels" . | nindent 4 }}
     app.kubernetes.io/component: worker
 spec:
   replicas: {{ .Values.worker.replicaCount }}
   selector:
     matchLabels:
-      {{- include "intentgraph.selectorLabels" . | nindent 6 }}
+      {{- include "governos.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: worker
   template:
     metadata:
       labels:
-        {{- include "intentgraph.labels" . | nindent 8 }}
+        {{- include "governos.labels" . | nindent 8 }}
         app.kubernetes.io/component: worker
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "intentgraph.serviceAccountName" . }}
+      serviceAccountName: {{ include "governos.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

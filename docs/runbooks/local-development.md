@@ -11,8 +11,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/DARREN-2000/IntentGraph.git
-cd IntentGraph
+git clone https://github.com/DARREN-2000/GovernOS.git
+cd GovernOS
 
 # Install dependencies
 npm install
@@ -60,22 +60,22 @@ docker compose up -d api
 
 ```bash
 # Lint the chart
-helm lint infra/helm/intentgraph
+helm lint infra/helm/governos
 
 # Render templates
-helm template intentgraph infra/helm/intentgraph
+helm template governos infra/helm/governos
 
 # Install to a cluster
-helm install intentgraph infra/helm/intentgraph \
-  --namespace intentgraph \
+helm install governos infra/helm/governos \
+  --namespace governos \
   --create-namespace
 
 # Upgrade
-helm upgrade intentgraph infra/helm/intentgraph \
-  --namespace intentgraph
+helm upgrade governos infra/helm/governos \
+  --namespace governos
 
 # Uninstall
-helm uninstall intentgraph --namespace intentgraph
+helm uninstall governos --namespace governos
 ```
 
 ## API Health Check
@@ -110,5 +110,5 @@ docker compose build --no-cache
 ### Helm template errors
 ```bash
 # Debug template rendering
-helm template intentgraph infra/helm/intentgraph --debug
+helm template governos infra/helm/governos --debug
 ```

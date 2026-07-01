@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "intentgraph.name" -}}
+{{- define "governos.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "intentgraph.fullname" -}}
+{{- define "governos.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -24,16 +24,16 @@ Create a default fully qualified app name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "intentgraph.chart" -}}
+{{- define "governos.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "intentgraph.labels" -}}
-helm.sh/chart: {{ include "intentgraph.chart" . }}
-{{ include "intentgraph.selectorLabels" . }}
+{{- define "governos.labels" -}}
+helm.sh/chart: {{ include "governos.chart" . }}
+{{ include "governos.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -43,17 +43,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "intentgraph.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "intentgraph.name" . }}
+{{- define "governos.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "governos.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "intentgraph.serviceAccountName" -}}
+{{- define "governos.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "intentgraph.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "governos.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

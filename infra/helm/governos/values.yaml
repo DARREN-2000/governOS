@@ -1,10 +1,10 @@
-# IntentGraph Helm Values
+# GovernOS Helm Values
 # Override these for your environment
 
 replicaCount: 2
 
 image:
-  repository: intentgraph/api
+  repository: governos/api
   pullPolicy: IfNotPresent
   tag: "0.1.0"
 
@@ -12,7 +12,7 @@ worker:
   enabled: true
   replicaCount: 2
   image:
-    repository: intentgraph/worker
+    repository: governos/worker
     pullPolicy: IfNotPresent
     tag: "0.1.0"
   resources:
@@ -57,7 +57,7 @@ ingress:
   className: "nginx"
   annotations: {}
   hosts:
-    - host: intentgraph.local
+    - host: governos.local
       paths:
         - path: /
           pathType: Prefix
@@ -86,8 +86,8 @@ affinity: {}
 postgresql:
   enabled: true
   auth:
-    database: intentgraph
-    username: intentgraph
+    database: governos
+    username: governos
     existingSecret: ""
   primary:
     persistence:

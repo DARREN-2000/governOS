@@ -11,10 +11,10 @@ patches:
         value: 1
     target:
       kind: Deployment
-      name: intentgraph-api
+      name: governos-api
 
 configMapGenerator:
-  - name: intentgraph-config
+  - name: governos-config
     behavior: merge
     literals:
       - NODE_ENV=development

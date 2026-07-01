@@ -1,7 +1,7 @@
 # Why Action Plugins Require Preview/Execute/Compensate
 
 **Status:** Accepted  
-**Authors:** IntentGraph Core Team  
+**Authors:** GovernOS Core Team
 **Last Updated:** 2025-07-14
 
 ---
@@ -20,7 +20,7 @@
 
 ## Problem Statement
 
-IntentGraph compiles natural-language intent into multi-step workflows that touch
+GovernOS compiles natural-language intent into multi-step workflows that touch
 external systems — GitHub, Slack, Gmail, cloud providers, payment processors.
 A naive "just call the API" approach fails in this context for several reasons:
 
@@ -61,7 +61,7 @@ think about reversibility at design time, not as an afterthought.
 
 ## The Three-Phase Contract
 
-Every action plugin in IntentGraph implements the `ActionPlugin` interface
+Every action plugin in GovernOS implements the `ActionPlugin` interface
 defined in `packages/workflow-spec/src/runtime.ts`:
 
 ```typescript
@@ -197,7 +197,7 @@ async compensate(ctx, payload) {
 
 ### Why not just use database transactions?
 
-Database transactions (ACID) work within a single database. IntentGraph
+Database transactions (ACID) work within a single database. GovernOS
 workflows span multiple external systems — GitHub, Slack, Gmail, cloud
 providers. You cannot wrap a GitHub API call and a Slack API call in a single
 database transaction. The systems are heterogeneous, distributed, and do not
@@ -208,7 +208,7 @@ semantics. You create a resource, get back an ID, and if you need to undo it,
 you call a separate delete endpoint. This is exactly what the compensation
 pattern models.
 
-**ACID is the right tool for local state.** IntentGraph uses database
+**ACID is the right tool for local state.** GovernOS uses database
 transactions for its own internal state (workflow runs, audit events). But the
 action contract addresses the cross-system coordination problem that ACID cannot
 solve.
@@ -216,7 +216,7 @@ solve.
 ### Why not sagas only?
 
 The saga pattern (a sequence of local transactions with compensating
-transactions) is the closest established pattern to what IntentGraph does. In
+transactions) is the closest established pattern to what GovernOS does. In
 fact, the runtime's rollback mechanism is essentially a saga coordinator.
 
 However, **sagas alone do not give you preview/dry-run**. The saga pattern
@@ -228,13 +228,13 @@ Preview is critical for user trust in an LLM-driven system. Users need to see
 the plan before it runs. The three-phase contract extends the saga pattern with
 a mandatory preview step.
 
-IntentGraph's approach can be described as: **saga pattern + mandatory preview +
+GovernOS's approach can be described as: **saga pattern + mandatory preview +
 policy-driven approval gating**.
 
 ### Why not event sourcing?
 
 Event sourcing records every state change as an immutable event, enabling replay
-and audit. IntentGraph does use event-sourced audit trails — every phase emits
+and audit. GovernOS does use event-sourced audit trails — every phase emits
 `AuditEvent` records (see [Audit Trail Integration](#audit-trail-integration)).
 
 However, event sourcing is **complementary, not a replacement** for the
@@ -247,7 +247,7 @@ three-phase contract:
 - Event sourcing is a storage pattern. The action contract is an **execution
   pattern**.
 
-IntentGraph uses both: the action contract governs execution, and event sourcing
+GovernOS uses both: the action contract governs execution, and event sourcing
 governs observability.
 
 ### Why is `compensate` optional but strongly encouraged?
@@ -491,7 +491,7 @@ export interface AuditEvent {
 ## Summary
 
 The three-phase action contract — `preview()`, `execute()`, `compensate()` — is
-the foundational abstraction in IntentGraph. It exists because:
+the foundational abstraction in GovernOS. It exists because:
 
 1. **Agentic workflows are multi-step and cross-system.** Database transactions
    cannot coordinate external API calls.

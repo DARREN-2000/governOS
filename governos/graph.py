@@ -1,7 +1,7 @@
 import networkx as nx
 from typing import List, Dict
 
-from intentgraph.models import Node, Edge, GraphData
+from governos.models import Node, Edge, GraphData
 
 class DependencyGraph:
     def __init__(self) -> None:

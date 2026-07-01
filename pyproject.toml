@@ -1,5 +1,5 @@
 [project]
-name = "intentgraph"
+name = "governos"
 version = "0.1.0"
 description = "A Python library that builds cross-file dependency graphs and code clusters to provide machine queryable context for AI agents."
 authors = [

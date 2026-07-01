@@ -14,8 +14,8 @@ GovernOS is designed to be easily deployable in various environments, from local
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/organization/intentgraph.git
-   cd intentgraph
+   git clone https://github.com/organization/governos.git
+   cd governos
    ```
 
 2. **Install Node.js Dependencies**
@@ -39,7 +39,7 @@ GovernOS is designed to be easily deployable in various environments, from local
    npm run dev &
 
    # In another terminal (for python services)
-   poetry run python -m intentgraph.api &
+   poetry run python -m governos.api &
    ```
 
 ## Docker Deployment
@@ -71,5 +71,5 @@ We provide a Helm chart for Kubernetes deployment:
 
 ```bash
 helm repo add governos https://charts.governos.io
-helm install my-governos governos/intentgraph
+helm install my-governos governos/governos
 ```

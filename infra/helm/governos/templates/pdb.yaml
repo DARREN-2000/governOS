@@ -2,13 +2,13 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "intentgraph.fullname" . }}-api
+  name: {{ include "governos.fullname" . }}-api
   labels:
-    {{- include "intentgraph.labels" . | nindent 4 }}
+    {{- include "governos.labels" . | nindent 4 }}
 spec:
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
   selector:
     matchLabels:
-      {{- include "intentgraph.selectorLabels" . | nindent 6 }}
+      {{- include "governos.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: api
 {{- end }}

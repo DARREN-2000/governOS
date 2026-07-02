@@ -3,8 +3,8 @@ import { mkdir, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const baseUrl = 'http://127.0.0.1:3001';
-const screenshotsDir = '/workspaces/IntentGraph/docs/screenshots';
-const videosDir = '/workspaces/IntentGraph/docs/videos';
+const screenshotsDir = '/workspaces/GovernOS/docs/screenshots';
+const videosDir = '/workspaces/GovernOS/docs/videos';
 
 const lowRiskIntent = 'Create an issue in github repo: my-repo title: Login bug';
 const highRiskIntent = 'Create a pull request in github repo: my-repo title: Improve auth from: feat/auth to: main';
@@ -62,7 +62,7 @@ await desktopContext.close();
 
 if (videoHandle) {
   const recordedPath = await videoHandle.path();
-  await copyFile(recordedPath, path.join(videosDir, 'intentgraph-dashboard-demo.webm'));
+  await copyFile(recordedPath, path.join(videosDir, 'governos-dashboard-demo.webm'));
 }
 
 const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 } });

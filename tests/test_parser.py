@@ -1,5 +1,5 @@
 import os
-from intentgraph.parser import CodeParser
+from governos.parser import CodeParser
 
 def test_parser_extracts_nodes_and_edges() -> None:
     parser = CodeParser()

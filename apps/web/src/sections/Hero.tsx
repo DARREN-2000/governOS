@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Terminal, ArrowRight, Sparkles } from 'lucide-react'
 
@@ -21,7 +22,7 @@ export function Hero() {
             className="inline-flex items-center rounded-full border border-border/50 bg-background/50 px-3 py-1 text-sm backdrop-blur-md"
           >
             <Sparkles className="mr-2 h-4 w-4 text-primary" />
-            <span className="text-muted-foreground">Announcing IntentGraph v1.0</span>
+            <span className="text-muted-foreground">Announcing GovernOS v1.0</span>
             <span className="mx-2 text-border">|</span>
             <a href="#" className="flex items-center text-primary hover:underline font-medium">
               Read the changelog <ArrowRight className="ml-1 h-3 w-3" />
@@ -41,7 +42,7 @@ export function Hero() {
               </span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
-              GovernOS (formerly IntentGraph) turns natural-language goals into trusted, orchestratable workflows. Preview, execute, and audit AI actions with enterprise-grade safety.
+              GovernOS turns natural-language goals into trusted, orchestratable workflows. Preview, execute, and audit AI actions with enterprise-grade safety.
             </p>
           </motion.div>
 
@@ -51,9 +52,11 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col sm:flex-row items-center gap-4 pt-4"
           >
-            <Button size="lg" className="h-12 px-8 rounded-full text-base">
-              Start Building Free
-            </Button>
+            <Link to="/playground">
+              <Button size="lg" className="h-12 px-8 rounded-full text-base">
+                Try Playground
+              </Button>
+            </Link>
             <Button size="lg" variant="outline" className="h-12 px-8 rounded-full text-base bg-background/50 backdrop-blur-md">
               Book a Demo
             </Button>
@@ -76,11 +79,11 @@ export function Hero() {
                   <div className="w-3 h-3 rounded-full bg-green-500/80" />
                 </div>
                 <div className="mx-auto flex items-center text-xs text-muted-foreground font-mono">
-                  <Terminal className="mr-2 h-3 w-3" /> intentgraph plan "deploy production"
+                  <Terminal className="mr-2 h-3 w-3" /> governos plan "deploy production"
                 </div>
               </div>
               <div className="p-6 text-left font-mono text-sm leading-relaxed overflow-x-auto text-muted-foreground bg-black/40">
-                <p><span className="text-blue-400">➜</span> <span className="text-primary/90">intentgraph</span> plan "Scale web tier to 5 replicas"</p>
+                <p><span className="text-blue-400">➜</span> <span className="text-primary/90">governos</span> plan "Scale web tier to 5 replicas"</p>
                 <p className="mt-2 text-green-400">✔ Analyzed intent</p>
                 <p className="text-green-400">✔ Generated workflow spec</p>
                 <p className="text-green-400">✔ Policy checks passed</p>

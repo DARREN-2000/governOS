@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "intentgraph.fullname" . }}-api
+  name: {{ include "governos.fullname" . }}-api
   labels:
-    {{- include "intentgraph.labels" . | nindent 4 }}
+    {{- include "governos.labels" . | nindent 4 }}
     app.kubernetes.io/component: api
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -11,7 +11,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- include "intentgraph.selectorLabels" . | nindent 6 }}
+      {{- include "governos.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: api
   template:
     metadata:
@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "intentgraph.labels" . | nindent 8 }}
+        {{- include "governos.labels" . | nindent 8 }}
         app.kubernetes.io/component: api
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
@@ -30,7 +30,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "intentgraph.serviceAccountName" . }}
+      serviceAccountName: {{ include "governos.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

@@ -9,7 +9,7 @@ GovernOS is a monorepo managed with npm workspaces and Poetry.
 - `apps/`: Deployable applications (Web, API gateway).
 - `packages/`: Shared libraries and action connectors.
 - `services/`: Backend microservices (Planner, Executor).
-- `intentgraph/`: Core Python library for code analysis.
+- `governos/`: Core Python library for code analysis.
 - `docs/`: System documentation.
 
 ## Coding Conventions

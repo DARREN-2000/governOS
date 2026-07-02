@@ -20,7 +20,7 @@
 
 1. Check worker pod logs:
    ```bash
-   kubectl logs -l component=worker -n intentgraph --tail=100
+   kubectl logs -l component=worker -n governos --tail=100
    ```
 
 2. Check Temporal UI for workflow execution details:
@@ -44,7 +44,7 @@
 1. For stuck workflows, trigger compensation manually
 2. Restart worker pods if needed:
    ```bash
-   kubectl rollout restart deployment/intentgraph-worker -n intentgraph
+   kubectl rollout restart deployment/governos-worker -n governos
    ```
 
 ## API Service Degradation
@@ -53,29 +53,29 @@
 
 1. Check API pod health:
    ```bash
-   kubectl get pods -l component=api -n intentgraph
-   curl http://intentgraph-api:3001/healthz
+   kubectl get pods -l component=api -n governos
+   curl http://governos-api:3001/healthz
    ```
 
 2. Check resource utilization:
    ```bash
-   kubectl top pods -l app=intentgraph -n intentgraph
+   kubectl top pods -l app=governos -n governos
    ```
 
 3. Check HPA status:
    ```bash
-   kubectl get hpa -n intentgraph
+   kubectl get hpa -n governos
    ```
 
 ### Resolution
 
 1. Scale up if resource-constrained:
    ```bash
-   kubectl scale deployment intentgraph-api --replicas=5 -n intentgraph
+   kubectl scale deployment governos-api --replicas=5 -n governos
    ```
 
 2. Check for memory leaks in recent deployments
 3. Roll back if caused by recent release:
    ```bash
-   kubectl rollout undo deployment/intentgraph-api -n intentgraph
+   kubectl rollout undo deployment/governos-api -n governos
    ```

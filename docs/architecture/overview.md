@@ -1,8 +1,8 @@
-# IntentGraph Architecture Overview
+# GovernOS Architecture Overview
 
 ## System Design
 
-IntentGraph is built as a layered system with clear separation of concerns:
+GovernOS is built as a layered system with clear separation of concerns:
 
 ```
 ┌─────────────────────────────────────────────────┐

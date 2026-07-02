@@ -9,10 +9,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "intentgraph-terraform-state"
+    bucket         = "governos-terraform-state"
     key            = "infra/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "intentgraph-terraform-locks"
+    dynamodb_table = "governos-terraform-locks"
     encrypt        = true
   }
 }
@@ -22,7 +22,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project     = "IntentGraph"
+      Project     = "GovernOS"
       ManagedBy   = "Terraform"
       Environment = var.environment
     }
@@ -50,7 +50,7 @@ module "vpc" {
 
 module "eks" {
   source = "./modules/eks"
-  # cluster_name = "intentgraph-${var.environment}"
+  # cluster_name = "governos-${var.environment}"
   # depends_on   = [module.vpc]
 }
 
@@ -68,5 +68,5 @@ module "redis" {
 
 module "s3" {
   source = "./modules/s3"
-  # bucket_prefix = "intentgraph-${var.environment}"
+  # bucket_prefix = "governos-${var.environment}"
 }

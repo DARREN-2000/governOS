@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
-from intentgraph.parser import CodeParser
-from intentgraph.graph import DependencyGraph
+from governos.parser import CodeParser
+from governos.graph import DependencyGraph
 import os
 from typing import Dict, Any
 

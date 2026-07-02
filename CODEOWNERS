@@ -7,7 +7,7 @@
 /apps/web/      @organization/frontend-team
 
 # Backend Python Core
-/intentgraph/   @organization/backend-team
+/governos/   @organization/backend-team
 /tests/         @organization/backend-team
 
 # Documentation

@@ -19,8 +19,8 @@ import { mkdir, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const baseUrl = process.env.DASHBOARD_URL || 'http://127.0.0.1:3001';
-const screenshotsDir = '/workspaces/IntentGraph/docs/screenshots';
-const videosDir = '/workspaces/IntentGraph/docs/videos';
+const screenshotsDir = '/workspaces/GovernOS/docs/screenshots';
+const videosDir = '/workspaces/GovernOS/docs/videos';
 const timeout = parseInt(process.env.CAPTURE_TIMEOUT || '30000', 10);
 
 console.log(`Capturing media from ${baseUrl}...`);
@@ -96,8 +96,8 @@ try {
   // Save video
   if (videoHandle) {
     const recordedPath = await videoHandle.path();
-    console.log('Saving video: intentgraph-dashboard-demo.webm');
-    await copyFile(recordedPath, path.join(videosDir, 'intentgraph-dashboard-demo.webm'));
+    console.log('Saving video: governos-dashboard-demo.webm');
+    await copyFile(recordedPath, path.join(videosDir, 'governos-dashboard-demo.webm'));
   }
 
   // Mobile screenshot

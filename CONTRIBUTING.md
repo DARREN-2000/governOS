@@ -4,7 +4,7 @@ First off, thank you for considering contributing to GovernOS! It's people like 
 
 ## Where do I go from here?
 
-If you've noticed a bug or have a feature request, make sure to check our [Issues](https://github.com/organization/intentgraph/issues) if it already exists. If not, open a new issue!
+If you've noticed a bug or have a feature request, make sure to check our [Issues](https://github.com/organization/governos/issues) if it already exists. If not, open a new issue!
 
 ## Development Setup
 

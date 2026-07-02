@@ -1,5 +1,5 @@
-from intentgraph.graph import DependencyGraph
-from intentgraph.models import Node, Edge
+from governos.graph import DependencyGraph
+from governos.models import Node, Edge
 
 def test_graph_add_nodes_edges() -> None:
     graph = DependencyGraph()

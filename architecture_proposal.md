@@ -2,7 +2,7 @@
 
 ## Problem Statement
 GovernOS is positioned as an enterprise-grade orchestration engine, yet the repository currently contains only:
-- A basic Python library (`intentgraph`) for parsing Python files using AST and building a NetworkX dependency graph.
+- A basic Python library (`governos`) for parsing Python files using AST and building a NetworkX dependency graph.
 - A static React frontend application in `apps/web` demonstrating marketing copy and screenshots, but completely disconnected from any backend.
 - `infra` scaffolding (Terraform modules commented out, basic Helm chart structure).
 
@@ -10,7 +10,7 @@ Crucial advertised features are missing entirely:
 - **Planner Service** & **Executor Service** (Node.js/Temporal)
 - **Action Plugins**
 - **Audit Service**
-- **API** for frontend-backend communication (e.g., `intentgraph.api`)
+- **API** for frontend-backend communication (e.g., `governos.api`)
 - **Database** & state management (PostgreSQL)
 - **Authentication/Authorization**
 - **Docker Compose** environment for running backing services
@@ -19,8 +19,8 @@ Crucial advertised features are missing entirely:
 
 To fulfill the mission and product rules outlined in `AGENTS.md` and `README.md`, I propose building out the following major architectural components:
 
-### 1. Python API Layer (`intentgraph.api`)
-- Use **FastAPI** to expose the existing core orchestrator (`intentgraph/orchestrator.py`) to external services.
+### 1. Python API Layer (`governos.api`)
+- Use **FastAPI** to expose the existing core orchestrator (`governos/orchestrator.py`) to external services.
 - Provide endpoints to submit files/directories and return the parsed `GraphData` in JSON format.
 
 ### 2. Node.js Backend Services (The Control Plane)

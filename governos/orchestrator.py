@@ -1,10 +1,10 @@
 import os
 from typing import List
 
-from intentgraph.parser import CodeParser
-from intentgraph.graph import DependencyGraph
-from intentgraph.models import GraphData
-from intentgraph.logger import setup_logger
+from governos.parser import CodeParser
+from governos.graph import DependencyGraph
+from governos.models import GraphData
+from governos.logger import setup_logger
 
 logger = setup_logger(__name__)
 

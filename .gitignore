@@ -91,7 +91,7 @@ infra/terraform/*.tfvars
 infra/terraform/.terraform.lock.hcl
 
 # Helm
-infra/helm/intentgraph/charts/*.tgz
+infra/helm/governos/charts/*.tgz
 
 # Misc
 logs/

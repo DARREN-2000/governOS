@@ -1,4 +1,4 @@
-# IntentGraph
+# GovernOS
 
 ## Mission
 Build a multi-tenant action OS that turns natural-language goals into trusted workflows.

@@ -1,5 +1,5 @@
 import os
-from intentgraph.orchestrator import Orchestrator
+from governos.orchestrator import Orchestrator
 
 def test_orchestrator_process_directory() -> None:
     orchestrator = Orchestrator()

@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2023-10-25
 
 ### Added
-- Initial release of GovernOS (formerly IntentGraph).
+- Initial release of GovernOS.
 - Core orchestration engine with `Planner`, `Executor`, and `Policy` services.
 - `apps/web`: Next.js Web Dashboard for intent planning and approval.
 - Context memory scoping (Personal, Project, Org).

@@ -16,10 +16,10 @@ export function Navigation() {
   }, [scrollY])
 
   const navLinks = [
-    { name: 'Product', href: '#product' },
-    { name: 'Solutions', href: '#solutions' },
-    { name: 'Developers', href: '#developers' },
-    { name: 'Pricing', href: '#pricing' },
+    { name: 'Product', href: '/#product', isInternal: false },
+    { name: 'Solutions', href: '/#solutions', isInternal: false },
+    { name: 'Playground', href: '/playground', isInternal: true },
+    { name: 'Dashboard', href: '/dashboard', isInternal: true },
   ]
 
   return (
@@ -45,13 +45,23 @@ export function Navigation() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.name}
-              </a>
+              link.isInternal ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
 
@@ -84,14 +94,25 @@ export function Navigation() {
         <div className="md:hidden bg-background border-b border-border px-4 pt-2 pb-6 space-y-4">
           <nav className="flex flex-col gap-4">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-base font-medium text-foreground p-2 rounded-md hover:bg-muted"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
+              link.isInternal ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-base font-medium text-foreground p-2 rounded-md hover:bg-muted"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-base font-medium text-foreground p-2 rounded-md hover:bg-muted"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
           <div className="flex flex-col gap-2 pt-4 border-t border-border">

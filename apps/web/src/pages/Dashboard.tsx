@@ -18,49 +18,52 @@ export function Dashboard() {
 
   const handlePlan = async () => {
     setLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3001/api/v1/intents', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ description: intent })
-      });
-      if (res.status === 401) {
-          navigate('/login');
-          return;
+
+    // Simulate backend planning
+    setTimeout(() => {
+      const mockPlanId = Math.random().toString(36).substring(7);
+
+      let action = 'Provision Resource';
+      let target = intent;
+
+      const lowerIntent = intent.toLowerCase();
+      if (lowerIntent.includes('s3') || lowerIntent.includes('bucket')) {
+        action = 'Provision S3 Bucket';
+        target = intent.replace(/provision/i, '').replace(/create/i, '').trim();
+      } else if (lowerIntent.includes('ec2') || lowerIntent.includes('instance')) {
+        action = 'Launch EC2 Instance';
+        target = intent.replace(/provision/i, '').replace(/launch/i, '').trim();
+      } else if (lowerIntent.includes('db') || lowerIntent.includes('database')) {
+        action = 'Create Database';
+        target = intent.replace(/create/i, '').replace(/database/i, '').trim();
       }
-      const data = await res.json();
-      setWorkflow(data.plan);
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
+
+      const mockPlan = {
+        id: `plan-${mockPlanId}`,
+        db_id: mockPlanId,
+        status: 'pending',
+        steps: [
+          { id: 1, description: `Analyze intent: ${intent}` },
+          { id: 2, description: `Verify policies for: ${action}` },
+          { id: 3, description: `Target: ${target || 'default'}` },
+          { id: 4, description: 'Dry run execution plan' }
+        ]
+      };
+
+      setWorkflow(mockPlan);
+      setLoading(false);
+    }, 1200);
   };
 
   const handleApprove = async () => {
     if (!workflow) return;
     setLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:3001/api/v1/intents/${workflow.db_id}/approve`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-      });
-      if (res.status === 401) {
-          navigate('/login');
-          return;
-      }
-      const data = await res.json();
-      setWorkflow({ ...workflow, status: data.status });
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
+
+    // Simulate backend approval and execution
+    setTimeout(() => {
+      setWorkflow({ ...workflow, status: 'completed' });
+      setLoading(false);
+    }, 1500);
   };
 
   return (

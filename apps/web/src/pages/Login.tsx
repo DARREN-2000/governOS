@@ -15,23 +15,17 @@ export function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    try {
-      const res = await fetch('http://localhost:3001/api/v1/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
+
+    // Simulate network delay for demo purposes
+    setTimeout(() => {
+      if (email && password) {
+        localStorage.setItem('token', 'mock_token_for_demo_' + Date.now());
         navigate('/dashboard');
       } else {
-        setError(data.error || 'Login failed');
+        setError('Please enter both email and password');
       }
-    } catch (err) {
-      setError('Network error');
-    }
-    setLoading(false);
+      setLoading(false);
+    }, 800);
   };
 
   return (

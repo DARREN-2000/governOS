@@ -186,7 +186,7 @@
 - **Micro-copy:** "Initialize graph", "Awaiting approval", "Dry run complete."
 - **Button Text:** Instead of "Submit", use "Execute Workflow". Instead of "Learn More", use "Explore Architecture".
 - **Marketing Copy:** Focus on verbs. "Map context. Gate actions. Execute safely."
-- **Tone Rule:** Avoid terms like "magical", "revolutionary", or "game-changing." Use terms like "deterministic", "typed", "auditable", and "resilient."
+- **Tone Rule:** Avoid generic marketing terms. Use terms like "deterministic", "typed", "auditable", and "resilient."
 
 ---
 

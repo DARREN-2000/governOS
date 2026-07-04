@@ -228,5 +228,5 @@ GovernOS is open-source software licensed under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-  <i>Built with precision for the next generation of autonomous systems.</i>
+  <i>Built with precision for modern autonomous systems.</i>
 </div>

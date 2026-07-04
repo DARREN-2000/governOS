@@ -59,13 +59,81 @@ export function Playground() {
           text: (
             <div className="mt-2 text-white/80">
               <p>Available playground commands:</p>
-              <ul className="list-disc pl-5 mt-1 space-y-1">
+              <ul className="list-disc pl-5 mt-1 space-y-1 grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <li><span className="text-primary">deploy [app]</span> - Simulate a deployment</li>
                 <li><span className="text-primary">scale [service] [number]</span> - Simulate scaling a service</li>
                 <li><span className="text-primary">restart [pod]</span> - Simulate restarting a resource</li>
+                <li><span className="text-primary">rollback [app]</span> - Rollback a deployment</li>
+                <li><span className="text-primary">provision [resource]</span> - Provision infrastructure</li>
+                <li><span className="text-primary">destroy [resource]</span> - Destroy resources</li>
+                <li><span className="text-primary">analyze [target]</span> - Analyze system state</li>
+                <li><span className="text-primary">audit [target]</span> - Run security audit</li>
+                <li><span className="text-primary">status</span> - View system status</li>
+                <li><span className="text-primary">history</span> - View execution history</li>
+                <li><span className="text-primary">whoami</span> - Display current identity</li>
                 <li><span className="text-primary">help</span> - Show this help message</li>
                 <li><span className="text-primary">clear</span> - Clear the terminal</li>
               </ul>
+            </div>
+          )
+        }
+      ])
+      return
+    }
+
+    if (newCommand.trim().toLowerCase() === 'status') {
+      setOutput(prev => [
+        ...prev,
+        {
+          type: 'info',
+          text: (
+            <div className="mt-2 text-green-400 font-mono">
+              <p>System Status: ONLINE</p>
+              <p>Control Plane: HEALTHY</p>
+              <p>Worker Nodes: 3/3 READY</p>
+              <p>Active Policies: 12</p>
+            </div>
+          )
+        }
+      ])
+      return
+    }
+
+    if (newCommand.trim().toLowerCase() === 'history') {
+      setOutput(prev => [
+        ...prev,
+        {
+          type: 'info',
+          text: (
+            <div className="mt-2 text-white/80 font-mono">
+              <p>Recent Executions:</p>
+              {history.length > 0 ? (
+                <ul className="list-decimal pl-5 mt-1">
+                  {history.slice(-5).map((cmd, i) => (
+                    <li key={i}>{cmd}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-muted-foreground mt-1">No execution history found.</p>
+              )}
+            </div>
+          )
+        }
+      ])
+      return
+    }
+
+    if (newCommand.trim().toLowerCase() === 'whoami') {
+      setOutput(prev => [
+        ...prev,
+        {
+          type: 'info',
+          text: (
+            <div className="mt-2 text-blue-400 font-mono">
+              <p>User: admin@governos.local</p>
+              <p>Role: Super Admin</p>
+              <p>Permissions: ['*']</p>
+              <p>Session Expires: 23h 59m</p>
             </div>
           )
         }
@@ -85,22 +153,97 @@ export function Playground() {
     let target = newCommand
     let risk = 'Low'
     let delay = 1500
+    let steps = [
+      'Verify target state and policies',
+      'Run pre-flight checks and dry-run',
+      'Execute target operation'
+    ]
 
     if (lowerCmd.includes('deploy')) {
       action = 'Deploy service to production environment'
       target = newCommand.replace(/deploy/i, '').trim() || 'app'
       risk = 'High'
       delay = 2000
+      steps = [
+        'Pull latest container image',
+        'Apply configuration changes',
+        'Perform rolling deployment',
+        'Verify health checks'
+      ]
     } else if (lowerCmd.includes('scale')) {
       action = 'Scale replica count'
       target = newCommand.replace(/scale/i, '').trim() || 'deployment'
       risk = 'Medium'
       delay = 1200
+      steps = [
+        'Calculate required capacity',
+        'Update deployment replica count',
+        'Wait for new pods to be ready'
+      ]
     } else if (lowerCmd.includes('restart')) {
       action = 'Rolling restart of workloads'
       target = newCommand.replace(/restart/i, '').trim() || 'pods'
       risk = 'Medium'
       delay = 1800
+      steps = [
+        'Cordon existing nodes',
+        'Evict current workloads',
+        'Restart workload pods sequentially'
+      ]
+    } else if (lowerCmd.includes('rollback')) {
+      action = 'Rollback deployment to previous version'
+      target = newCommand.replace(/rollback/i, '').trim() || 'app'
+      risk = 'High'
+      delay = 2500
+      steps = [
+        'Identify previous stable revision',
+        'Drain traffic from current revision',
+        'Restore previous configuration',
+        'Verify service stability'
+      ]
+    } else if (lowerCmd.includes('provision')) {
+      action = 'Provision new cloud resources'
+      target = newCommand.replace(/provision/i, '').trim() || 'resource'
+      risk = 'High'
+      delay = 3000
+      steps = [
+        'Validate Infrastructure as Code',
+        'Acquire cloud provider locks',
+        'Create requested resources',
+        'Apply default security policies'
+      ]
+    } else if (lowerCmd.includes('destroy')) {
+      action = 'Destroy cloud resources permanently'
+      target = newCommand.replace(/destroy/i, '').trim() || 'resource'
+      risk = 'Critical'
+      delay = 3500
+      steps = [
+        'Isolate resources from network',
+        'Take final data snapshots',
+        'Decommission resources',
+        'Release allocated IPs/Storage'
+      ]
+    } else if (lowerCmd.includes('analyze')) {
+      action = 'Analyze system state and performance'
+      target = newCommand.replace(/analyze/i, '').trim() || 'target'
+      risk = 'Low'
+      delay = 1000
+      steps = [
+        'Collect metrics and logs',
+        'Identify performance bottlenecks',
+        'Generate optimization recommendations'
+      ]
+    } else if (lowerCmd.includes('audit')) {
+      action = 'Run security compliance audit'
+      target = newCommand.replace(/audit/i, '').trim() || 'target'
+      risk = 'Low'
+      delay = 2000
+      steps = [
+        'Scan for known vulnerabilities',
+        'Check IAM permissions',
+        'Verify compliance with CIS benchmarks',
+        'Generate audit report'
+      ]
     }
 
     setTimeout(() => {
@@ -119,18 +262,16 @@ export function Playground() {
                   <span className="text-muted-foreground">1.</span>
                   <span>{action}: <span className="text-purple-400 font-semibold">{target}</span></span>
                 </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-muted-foreground">2.</span>
-                  <span>Verify target state and policies</span>
-                </p>
-                <p className="flex items-start gap-2">
-                  <span className="text-muted-foreground">3.</span>
-                  <span>Run pre-flight checks and dry-run</span>
-                </p>
+                {steps.map((step, idx) => (
+                  <p key={idx} className="flex items-start gap-2">
+                    <span className="text-muted-foreground">{idx + 2}.</span>
+                    <span>{step}</span>
+                  </p>
+                ))}
               </div>
               <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                <p className={risk === 'High' ? 'text-destructive font-bold' : risk === 'Medium' ? 'text-yellow-400' : 'text-green-400'}>
-                  {risk === 'High' ? '⛔' : risk === 'Medium' ? '⚠️' : '✅'} Risk Level: {risk} {risk === 'Low' && '(Auto-approved)'}
+                <p className={risk === 'Critical' ? 'text-red-500 font-bold animate-pulse' : risk === 'High' ? 'text-destructive font-bold' : risk === 'Medium' ? 'text-yellow-400' : 'text-green-400'}>
+                  {risk === 'Critical' ? '🚨' : risk === 'High' ? '⛔' : risk === 'Medium' ? '⚠️' : '✅'} Risk Level: {risk} {risk === 'Low' && '(Auto-approved)'}
                 </p>
                 <span className="text-xs text-muted-foreground">Est. Time: {(delay / 1000).toFixed(1)}s</span>
               </div>
@@ -180,6 +321,16 @@ export function Playground() {
             <div className="flex-1 space-y-1">
               <p>Welcome to GovernOS Playground v1.0</p>
               <p>Type a command to generate an execution plan.</p>
+
+              <div className="mt-4 mb-4 flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-white" onClick={() => setCommand('status')}>status</Button>
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-white" onClick={() => setCommand('analyze frontend')}>analyze frontend</Button>
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-white" onClick={() => setCommand('audit iam')}>audit iam</Button>
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-white" onClick={() => setCommand('provision database')}>provision database</Button>
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-destructive" onClick={() => setCommand('destroy cache-cluster')}>destroy cache-cluster</Button>
+                <Button variant="outline" size="sm" className="h-6 text-xs bg-white/5 border-white/10 text-muted-foreground hover:text-white" onClick={() => setCommand('help')}>help</Button>
+              </div>
+
               <br />
               {output.map((item, i) => (
                 <div key={i}>

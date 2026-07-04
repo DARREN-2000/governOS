@@ -1,15 +1,15 @@
 import { proxyActivities, sleep, condition, setHandler, defineSignal } from '@temporalio/workflow';
 import type * as activities from './activities.js';
 
-const { parseIntent, executePlan } = proxyActivities<typeof activities>({
+const { executePlan } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
 
 export const approveSignal = defineSignal<[]>('approve');
 
 export async function intentExecutionWorkflow(intentId: string, description: string): Promise<string> {
-  const result = await parseIntent(description);
-
+  // The parseIntent step was moved to the API router (index.ts) to happen synchronously during planning.
+  // At this point in the workflow, the plan is already created and we just await approval.
   let isApproved = false;
   setHandler(approveSignal, () => {
     isApproved = true;

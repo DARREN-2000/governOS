@@ -19,51 +19,92 @@ export function Dashboard() {
   const handlePlan = async () => {
     setLoading(true);
 
-    // Simulate backend planning
-    setTimeout(() => {
-      const mockPlanId = Math.random().toString(36).substring(7);
-
-      let action = 'Provision Resource';
-      let target = intent;
-
-      const lowerIntent = intent.toLowerCase();
-      if (lowerIntent.includes('s3') || lowerIntent.includes('bucket')) {
-        action = 'Provision S3 Bucket';
-        target = intent.replace(/provision/i, '').replace(/create/i, '').trim();
-      } else if (lowerIntent.includes('ec2') || lowerIntent.includes('instance')) {
-        action = 'Launch EC2 Instance';
-        target = intent.replace(/provision/i, '').replace(/launch/i, '').trim();
-      } else if (lowerIntent.includes('db') || lowerIntent.includes('database')) {
-        action = 'Create Database';
-        target = intent.replace(/create/i, '').replace(/database/i, '').trim();
+    if (import.meta.env.VITE_API_URL) {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/intents`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ description: intent }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setWorkflow(data.plan);
+        } else {
+          console.error(data.error);
+        }
+      } catch (err) {
+        console.error('Network error', err);
+      } finally {
+        setLoading(false);
       }
+    } else {
+      // Simulate backend planning
+      setTimeout(() => {
+        const mockPlanId = Math.random().toString(36).substring(7);
 
-      const mockPlan = {
-        id: `plan-${mockPlanId}`,
-        db_id: mockPlanId,
-        status: 'pending',
-        steps: [
-          { id: 1, description: `Analyze intent: ${intent}` },
-          { id: 2, description: `Verify policies for: ${action}` },
-          { id: 3, description: `Target: ${target || 'default'}` },
-          { id: 4, description: 'Dry run execution plan' }
-        ]
-      };
+        let action = 'Provision Resource';
+        let target = intent;
 
-      setWorkflow(mockPlan);
-      setLoading(false);
-    }, 1200);
+        const lowerIntent = intent.toLowerCase();
+        if (lowerIntent.includes('s3') || lowerIntent.includes('bucket')) {
+          action = 'Provision S3 Bucket';
+          target = intent.replace(/provision/i, '').replace(/create/i, '').trim();
+        } else if (lowerIntent.includes('ec2') || lowerIntent.includes('instance')) {
+          action = 'Launch EC2 Instance';
+          target = intent.replace(/provision/i, '').replace(/launch/i, '').trim();
+        } else if (lowerIntent.includes('db') || lowerIntent.includes('database')) {
+          action = 'Create Database';
+          target = intent.replace(/create/i, '').replace(/database/i, '').trim();
+        }
+
+        const mockPlan = {
+          id: `plan-${mockPlanId}`,
+          db_id: mockPlanId,
+          status: 'pending',
+          steps: [
+            { id: 1, description: `Analyze intent: ${intent}` },
+            { id: 2, description: `Verify policies for: ${action}` },
+            { id: 3, description: `Target: ${target || 'default'}` },
+            { id: 4, description: 'Dry run execution plan' }
+          ]
+        };
+
+        setWorkflow(mockPlan);
+        setLoading(false);
+      }, 1200);
+    }
   };
 
   const handleApprove = async () => {
     if (!workflow) return;
     setLoading(true);
 
-    // Simulate backend approval and execution
-    setTimeout(() => {
-      setWorkflow({ ...workflow, status: 'completed' });
-      setLoading(false);
-    }, 1500);
+    if (import.meta.env.VITE_API_URL && workflow.db_id) {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/intents/${workflow.db_id}/approve`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (response.ok) {
+           setWorkflow({ ...workflow, status: 'completed' });
+        }
+      } catch (err) {
+        console.error('Network error', err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Simulate backend approval and execution
+      setTimeout(() => {
+        setWorkflow({ ...workflow, status: 'completed' });
+        setLoading(false);
+      }, 1500);
+    }
   };
 
   return (

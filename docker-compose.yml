@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  python-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  node-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - PYTHON_API_URL=http://python-api:8000
+    depends_on:
+      - python-api
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        - VITE_API_URL=http://localhost:3001
+    ports:
+      - "80:80"
+    depends_on:
+      - node-api

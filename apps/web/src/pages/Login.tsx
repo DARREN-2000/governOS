@@ -16,16 +16,37 @@ export function Login() {
     setLoading(true);
     setError('');
 
-    // Simulate network delay for demo purposes
-    setTimeout(() => {
-      if (email && password) {
-        localStorage.setItem('token', 'mock_token_for_demo_' + Date.now());
-        navigate('/dashboard');
-      } else {
-        setError('Please enter both email and password');
+    if (import.meta.env.VITE_API_URL) {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          navigate('/dashboard');
+        } else {
+          setError(data.error || 'Login failed');
+        }
+      } catch (err) {
+        setError('Network error');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 800);
+    } else {
+      // Simulate network delay for demo purposes
+      setTimeout(() => {
+        if (email && password) {
+          localStorage.setItem('token', 'mock_token_for_demo_' + Date.now());
+          navigate('/dashboard');
+        } else {
+          setError('Please enter both email and password');
+        }
+        setLoading(false);
+      }, 800);
+    }
   };
 
   return (

@@ -1,25 +1,17 @@
-# Security Policy
+# GovernOS Security Policy
 
-## Supported Versions
-
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| 0.9.x   | :x:                |
+GovernOS is built to secure AI infrastructure. We take vulnerabilities in our own codebase extremely seriously.
 
 ## Reporting a Vulnerability
 
-We take the security of GovernOS very seriously. If you discover a vulnerability, please do NOT report it via public GitHub issues.
+**DO NOT report security vulnerabilities via public GitHub issues.**
 
-Instead, please send an email to **security@governos.io**.
+If you discover a vulnerability, please email `security@governos.io` with a detailed report. We aim to respond within 48 hours.
 
-We will acknowledge your report within 24 hours, and aim to provide a fix within 7 days for critical vulnerabilities.
+## Security Posture
+- **Input Validation:** File ingestion pipelines enforce `MAX_FILE_SIZE` and standard file-type verification to prevent DoS attacks.
+- **Least Privilege:** All plugins and action executors are sandboxed and operate with the minimum required scopes.
+- **Audit Logging:** Every state change in a workflow is cryptographically signed and stored in an immutable audit ledger.
 
-### Threat Model Constraints
-
-Please note our threat model as described in `docs/security/threat-model.md`:
-- Action plugins only have access to explicitly provided credentials.
-- Prompt injection in natural language intent is considered an accepted input, as all outputs are typed and strictly validated by the deterministic Policy Engine before any side-effects occur.
+## Supported Versions
+Currently, only the `main` branch and the latest stable release tag receive security updates.

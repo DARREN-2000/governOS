@@ -2,23 +2,36 @@
 
 First off, thank you for considering contributing to GovernOS! It's people like you that make GovernOS such a great tool.
 
-## Where do I go from here?
+GovernOS is positioned as the standard trust layer for autonomous agents in the enterprise. We expect all contributions to maintain a high bar of engineering excellence, security, and documentation.
 
-If you've noticed a bug or have a feature request, make sure to check our [Issues](https://github.com/organization/governos/issues) if it already exists. If not, open a new issue!
+## How Can I Contribute?
 
-## Development Setup
+### 1. Reporting Bugs
+- Ensure the bug was not already reported by searching on GitHub under Issues.
+- If you're unable to find an open issue addressing the problem, open a new one.
+- Use the provided Bug Report issue template.
 
-Please refer to `docs/dx/onboarding.md` for full instructions on setting up your local environment for both the Node.js frontend and Python backend.
+### 2. Suggesting Enhancements
+- Open a new issue with the Feature Request template.
+- Provide a clear and detailed explanation of the feature and the problem it solves.
 
-## Pull Requests
+### 3. Pull Requests
+- Fork the repo and create your branch from `main`.
+- If you've added code that should be tested, add tests.
+- Ensure the test suite passes (`poetry run pytest tests/`).
+- Ensure your code lints correctly (`poetry run ruff check .`).
+- Ensure type hints are accurate (`poetry run mypy .`).
+- If you change `pyproject.toml`, run `poetry lock`.
+- Frontend changes must strictly use `pnpm`. No `npm` or `yarn`.
 
-1. Fork the repo and create your branch from `main`.
-2. If you've added code that should be tested, add tests.
-3. If you've changed APIs, update the documentation.
-4. Ensure the test suite passes (`npm test` and `poetry run pytest`).
-5. Make sure your code lints (`npm run lint` and `poetry run ruff check .`).
-6. Issue that pull request!
+## Development Environment Setup
 
-## Code of Conduct
+Please see our [Installation Guide](docs/getting-started/installation.md) and [Quickstart](docs/getting-started/quickstart.md) for detailed setup instructions.
+
+## Development Constraints and Rules
+- **UI/UX**: Strictly React 19, Vite, Tailwind CSS, shadcn/ui.
+- **Python**: Strict type hints. Fast serialization inside tight loops (avoid `Pydantic.model_dump()` in loops).
+- **Security**: Validate paths and file sizes before parsing. Read `SECURITY.md`.
+- **Architecture**: Actions must implement `preview()`, `execute()`, and `compensate()`.
 
 By participating in this project, you agree to abide by the GovernOS [Code of Conduct](CODE_OF_CONDUCT.md).

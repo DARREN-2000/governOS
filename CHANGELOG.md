@@ -8,15 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Comprehensive documentation suite under `docs/`.
-- GitHub community health files (Issue templates, PR templates, CODEOWNERS).
-- Advanced API reference and TypeScript/Python SDK examples.
+- Comprehensive enterprise-grade documentation structure.
+- Professional Mermaid diagrams integrated directly into the README.
+- Upgraded security posture validating `MAX_FILE_SIZE` on parsing.
+- Added strict multi-tenant context documentation.
 
-## [1.0.0] - 2023-10-25
+### Changed
+- Rebranded repository to project "GovernOS".
+- Enforced `pnpm` exclusively for frontend package management.
 
-### Added
-- Initial release of GovernOS.
-- Core orchestration engine with `Planner`, `Executor`, and `Policy` services.
-- `apps/web`: Next.js Web Dashboard for intent planning and approval.
-- Context memory scoping (Personal, Project, Org).
-- Audit event logging for execution integrity.
+### Fixed
+- Addressed Pydantic `model_dump()` performance bottlenecks in graph ingestion loops.

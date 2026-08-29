@@ -3,7 +3,7 @@ services:
     name: governos-node-api
     env: node
     plan: free
-    buildCommand: "npm install -g pnpm && cd apps/api && pnpm install && pnpm run build"
+    buildCommand: "npm install -g pnpm && cd apps/api && pnpm install --config.ignore-scripts=false && pnpm rebuild better-sqlite3 && pnpm run build"
     startCommand: "cd apps/api && pnpm start"
     envVars:
       - key: NODE_VERSION
@@ -16,7 +16,7 @@ services:
   - type: web
     name: governos-web
     env: static
-    buildCommand: "npm install -g pnpm && cd apps/web && pnpm install && pnpm run build"
+    buildCommand: "npm install -g pnpm && cd apps/web && pnpm install --config.ignore-scripts=false && pnpm run build"
     staticPublishPath: apps/web/dist
     envVars:
       - key: VITE_API_URL

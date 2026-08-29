@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
  * Capture new dashboard media for GitHub Pages demo.
- * 
+ *
  * This script regenerates screenshots and video from the latest UI.
- * 
+ *
  * Usage (requires dashboard running at http://127.0.0.1:3001):
  *   node docs/scripts/capture-media-ci.mjs
- * 
+ *
  * For CI/GitHub Actions:
  *   1. Ensure Docker Compose services are running
  *   2. Wait for API health check to pass
@@ -14,21 +14,23 @@
  *   4. Run this script
  */
 
-import { chromium } from 'playwright';
-import { mkdir, copyFile } from 'node:fs/promises';
-import path from 'node:path';
+import { chromium } from "playwright";
+import { mkdir, copyFile } from "node:fs/promises";
+import path from "node:path";
 
-const baseUrl = process.env.DASHBOARD_URL || 'http://127.0.0.1:3001';
-const screenshotsDir = '/workspaces/GovernOS/docs/screenshots';
-const videosDir = '/workspaces/GovernOS/docs/videos';
-const timeout = parseInt(process.env.CAPTURE_TIMEOUT || '30000', 10);
+const baseUrl = process.env.DASHBOARD_URL || "http://127.0.0.1:3001";
+const screenshotsDir = "/workspaces/GovernOS/docs/screenshots";
+const videosDir = "/workspaces/GovernOS/docs/videos";
+const timeout = parseInt(process.env.CAPTURE_TIMEOUT || "30000", 10);
 
 console.log(`Capturing media from ${baseUrl}...`);
 console.log(`Screenshots: ${screenshotsDir}`);
 console.log(`Videos: ${videosDir}`);
 
-const lowRiskIntent = 'Create an issue in github repo: my-repo title: Login bug';
-const highRiskIntent = 'Create a pull request in github repo: my-repo title: Improve auth from: feat/auth to: main';
+const lowRiskIntent =
+  "Create an issue in github repo: my-repo title: Login bug";
+const highRiskIntent =
+  "Create a pull request in github repo: my-repo title: Improve auth from: feat/auth to: main";
 
 try {
   await mkdir(screenshotsDir, { recursive: true });
@@ -48,47 +50,64 @@ try {
   const videoHandle = page.video();
 
   // Navigate to dashboard
-  console.log('Navigating to dashboard...');
-  await page.goto(baseUrl, { waitUntil: 'networkidle', timeout });
+  console.log("Navigating to dashboard...");
+  await page.goto(baseUrl, { waitUntil: "networkidle", timeout });
   await page.waitForTimeout(1200);
-  console.log('Capturing: dashboard-home.png');
-  await page.screenshot({ path: path.join(screenshotsDir, 'dashboard-home.png'), fullPage: true });
+  console.log("Capturing: dashboard-home.png");
+  await page.screenshot({
+    path: path.join(screenshotsDir, "dashboard-home.png"),
+    fullPage: true,
+  });
 
   // Test low-risk workflow
-  console.log('Testing low-risk workflow...');
-  const intentInput = page.locator('input[placeholder="Describe what you want to do..."]');
+  console.log("Testing low-risk workflow...");
+  const intentInput = page.locator(
+    'input[placeholder="Describe what you want to do..."]',
+  );
   await intentInput.fill(lowRiskIntent);
-  await page.getByRole('button', { name: 'Create' }).click();
-  await page.waitForSelector('text=Workflow planned with', { timeout });
+  await page.getByRole("button", { name: "Create" }).click();
+  await page.waitForSelector("text=Workflow planned with", { timeout });
   await page.waitForTimeout(700);
-  console.log('Capturing: dashboard-workflow-planned.png');
-  await page.screenshot({ path: path.join(screenshotsDir, 'dashboard-workflow-planned.png'), fullPage: true });
+  console.log("Capturing: dashboard-workflow-planned.png");
+  await page.screenshot({
+    path: path.join(screenshotsDir, "dashboard-workflow-planned.png"),
+    fullPage: true,
+  });
 
-  const executeButtons = page.getByRole('button', { name: 'Execute' });
+  const executeButtons = page.getByRole("button", { name: "Execute" });
   await executeButtons.first().click();
   await page.waitForTimeout(1200);
-  console.log('Capturing: dashboard-execution-complete.png');
-  await page.screenshot({ path: path.join(screenshotsDir, 'dashboard-execution-complete.png'), fullPage: true });
+  console.log("Capturing: dashboard-execution-complete.png");
+  await page.screenshot({
+    path: path.join(screenshotsDir, "dashboard-execution-complete.png"),
+    fullPage: true,
+  });
 
   // Test high-risk workflow (requires approval)
-  console.log('Testing high-risk workflow...');
+  console.log("Testing high-risk workflow...");
   await intentInput.fill(highRiskIntent);
-  await page.getByRole('button', { name: 'Create' }).click();
-  await page.waitForSelector('text=Workflow planned with', { timeout });
-  const prRow = page.locator('tbody tr', { hasText: 'pull request' }).first();
+  await page.getByRole("button", { name: "Create" }).click();
+  await page.waitForSelector("text=Workflow planned with", { timeout });
+  const prRow = page.locator("tbody tr", { hasText: "pull request" }).first();
   await prRow.waitFor({ timeout });
-  await prRow.getByRole('button', { name: 'Execute' }).click();
+  await prRow.getByRole("button", { name: "Execute" }).click();
   await page.waitForSelector('button:has-text("Approve")', { timeout });
   await page.waitForTimeout(1000);
-  console.log('Capturing: dashboard-waiting-approval.png');
-  await page.screenshot({ path: path.join(screenshotsDir, 'dashboard-waiting-approval.png'), fullPage: true });
+  console.log("Capturing: dashboard-waiting-approval.png");
+  await page.screenshot({
+    path: path.join(screenshotsDir, "dashboard-waiting-approval.png"),
+    fullPage: true,
+  });
 
-  const approveButtons = page.getByRole('button', { name: 'Approve' });
+  const approveButtons = page.getByRole("button", { name: "Approve" });
   if (await approveButtons.count()) {
     await approveButtons.first().click();
     await page.waitForTimeout(1500);
-    console.log('Capturing: dashboard-approval-complete.png');
-    await page.screenshot({ path: path.join(screenshotsDir, 'dashboard-approval-complete.png'), fullPage: true });
+    console.log("Capturing: dashboard-approval-complete.png");
+    await page.screenshot({
+      path: path.join(screenshotsDir, "dashboard-approval-complete.png"),
+      fullPage: true,
+    });
   }
 
   await desktopContext.close();
@@ -96,25 +115,33 @@ try {
   // Save video
   if (videoHandle) {
     const recordedPath = await videoHandle.path();
-    console.log('Saving video: governos-dashboard-demo.webm');
-    await copyFile(recordedPath, path.join(videosDir, 'governos-dashboard-demo.webm'));
+    console.log("Saving video: governos-dashboard-demo.webm");
+    await copyFile(
+      recordedPath,
+      path.join(videosDir, "governos-dashboard-demo.webm"),
+    );
   }
 
   // Mobile screenshot
-  console.log('Capturing mobile view...');
-  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  console.log("Capturing mobile view...");
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
   const mobilePage = await mobileContext.newPage();
-  await mobilePage.goto(baseUrl, { waitUntil: 'networkidle', timeout });
+  await mobilePage.goto(baseUrl, { waitUntil: "networkidle", timeout });
   await mobilePage.waitForTimeout(1200);
-  console.log('Capturing: dashboard-mobile.png');
-  await mobilePage.screenshot({ path: path.join(screenshotsDir, 'dashboard-mobile.png'), fullPage: true });
+  console.log("Capturing: dashboard-mobile.png");
+  await mobilePage.screenshot({
+    path: path.join(screenshotsDir, "dashboard-mobile.png"),
+    fullPage: true,
+  });
   await mobileContext.close();
 
   await browser.close();
 
-  console.log('✓ Media capture complete.');
+  console.log("✓ Media capture complete.");
   process.exit(0);
 } catch (error) {
-  console.error('✗ Media capture failed:', error.message);
+  console.error("✗ Media capture failed:", error.message);
   process.exit(1);
 }

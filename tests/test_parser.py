@@ -1,5 +1,7 @@
 import os
+
 from governos.parser import CodeParser
+
 
 def test_parser_extracts_nodes_and_edges() -> None:
     parser = CodeParser()
@@ -14,7 +16,9 @@ def test_parser_extracts_nodes_and_edges() -> None:
     assert len(class_nodes) == 1
 
     # Check if the function is found
-    func_nodes = [n for n in nodes if n.type == "function" and n.name == "help_function"]
+    func_nodes = [
+        n for n in nodes if n.type == "function" and n.name == "help_function"
+    ]
     assert len(func_nodes) == 1
 
     # Check imports

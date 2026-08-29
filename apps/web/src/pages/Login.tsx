@@ -1,37 +1,40 @@
-import { useState } from 'react';
-import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Button } from "@/components/Button";
+import { Card } from "@/components/Card";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     if (import.meta.env.VITE_API_URL) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/v1/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          },
+        );
         const data = await response.json();
         if (response.ok) {
-          localStorage.setItem('token', data.token);
-          navigate('/dashboard');
+          localStorage.setItem("token", data.token);
+          navigate("/dashboard");
         } else {
-          setError(data.error || 'Login failed');
+          setError(data.error || "Login failed");
         }
       } catch (err) {
-        setError('Network error');
+        setError("Network error");
       } finally {
         setLoading(false);
       }
@@ -39,10 +42,10 @@ export function Login() {
       // Simulate network delay for demo purposes
       setTimeout(() => {
         if (email && password) {
-          localStorage.setItem('token', 'mock_token_for_demo_' + Date.now());
-          navigate('/dashboard');
+          localStorage.setItem("token", "mock_token_for_demo_" + Date.now());
+          navigate("/dashboard");
         } else {
-          setError('Please enter both email and password');
+          setError("Please enter both email and password");
         }
         setLoading(false);
       }, 800);
@@ -51,7 +54,11 @@ export function Login() {
 
   return (
     <div className="container mx-auto px-4 py-24 min-h-screen flex items-center justify-center text-foreground bg-background">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md"
+      >
         <Card className="p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold tracking-tight mb-2">GovernOS</h1>
@@ -81,9 +88,25 @@ export function Login() {
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button type="submit" disabled={loading} className="w-full mt-6">
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
+
+          <div className="mt-6 pt-4 border-t border-border">
+            <p className="text-xs text-muted-foreground text-center mb-2">
+              Try the live demo instantly:
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("admin@governos.io");
+                setPassword("password");
+              }}
+              className="w-full text-sm text-center py-2 px-3 rounded-md bg-muted/50 hover:bg-muted border border-border text-muted-foreground hover:text-foreground transition-colors font-mono"
+            >
+              Use demo credentials →
+            </button>
+          </div>
         </Card>
       </motion.div>
     </div>

@@ -4,7 +4,7 @@ GovernOS is built around several foundational concepts that define how autonomou
 
 ## Intent
 
-An **Intent** is a declarative goal provided by a user. It can be natural language ("Provision a new staging database") or structured YAML. The system's job is to figure out *how* to achieve this intent.
+An **Intent** is a declarative goal provided by a user. It can be natural language ("Provision a new staging database") or structured YAML. The system's job is to figure out _how_ to achieve this intent.
 
 ## Execution Plan (Workflow Spec)
 
@@ -13,6 +13,7 @@ When an intent is parsed, it is converted into an **Execution Plan**. This is a 
 ## Action Plugins
 
 **Actions** are the atomic units of work. Every action must implement a strict contract:
+
 1. `preview()`: Describe what will happen without making changes.
 2. `execute()`: Perform the change idempotently.
 3. `compensate()`: Revert the change if a subsequent step fails.

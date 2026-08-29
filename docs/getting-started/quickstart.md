@@ -36,7 +36,8 @@ GovernOS will preview the execution plan before making any changes:
 governos plan intent.yaml
 ```
 
-*Expected Output:*
+_Expected Output:_
+
 ```
 ✓ Parsed intent successfully
 ✓ Evaluated policies: 1 passed, 0 failed

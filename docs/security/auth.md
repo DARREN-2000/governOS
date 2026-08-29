@@ -5,6 +5,7 @@ GovernOS secures endpoints using standard identity protocols and role-based acce
 ## Authentication
 
 The API supports:
+
 1. **Bearer Tokens (JWT)**: For user-facing Web Dashboard access.
 2. **API Keys**: For programmatic access via CLI or SDKs.
 
@@ -21,6 +22,7 @@ Access is governed by RBAC. Permissions are evaluated by the Policy Engine.
 ## Boundary Scopes
 
 All intents are executed within a specific context memory boundary:
+
 - Personal Scope
 - Project Scope
 - Organization Scope

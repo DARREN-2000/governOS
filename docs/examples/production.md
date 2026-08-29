@@ -7,9 +7,11 @@ GovernOS is used by enterprise teams to automate critical, high-stakes infrastru
 During a traffic spike, an alert is triggered in Datadog. An automated webhook is sent to GovernOS to handle the remediation.
 
 **Intent (via API):**
+
 > "Scale up the Web API read-replicas by 3 due to high latency alert."
 
 **Generated Plan:**
+
 ```json
 {
   "steps": [
@@ -38,9 +40,11 @@ Since the intent originated from a trusted internal Datadog webhook (verified vi
 A user requests account deletion under GDPR. The data is scattered across multiple SaaS tools.
 
 **Intent:**
+
 > "Delete all user data associated with email user@example.com across our systems."
 
 **Generated Plan:**
+
 ```yaml
 steps:
   - id: delete_stripe

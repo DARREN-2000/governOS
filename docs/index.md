@@ -3,6 +3,7 @@
 Welcome to the comprehensive documentation for GovernOS.
 
 ## Sections
+
 - [Getting Started](getting-started.md)
 - [Installation](installation.md)
 - [Configuration](configuration.md)

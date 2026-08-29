@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { Button } from '@/components/Button'
+import { motion } from "framer-motion";
+import { Button } from "@/components/Button";
 
 export function CTA() {
   return (
@@ -20,18 +20,23 @@ export function CTA() {
             Ready to secure your autonomous agents?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl">
-            Join forward-thinking engineering teams using GovernOS to bring AI workflows into production safely.
+            Join forward-thinking engineering teams using GovernOS to bring AI
+            workflows into production safely.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button size="lg" className="h-12 px-8 rounded-full text-base">
               Start Building Free
             </Button>
-            <Button size="lg" variant="outline" className="h-12 px-8 rounded-full text-base bg-background/50 backdrop-blur-md">
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 px-8 rounded-full text-base bg-background/50 backdrop-blur-md"
+            >
               Contact Sales
             </Button>
           </div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

@@ -3,10 +3,12 @@
 Get GovernOS up and running locally in under 5 minutes.
 
 ## 1. Prerequisites
+
 - Docker Compose
 - Ensure ports `80`, `3001`, and `8000` are free on your machine.
 
 ## 2. Start the Stack
+
 Clone the repository and spin up the services:
 
 ```bash
@@ -16,13 +18,16 @@ docker-compose up --build
 ```
 
 ## 3. Explore the Dashboard
+
 Navigate to `http://localhost:80` (or `http://localhost:5173` if running natively without Docker).
 
 Log in using the default credentials:
+
 - **Email:** `admin@governos.io`
 - **Password:** `password`
 
 ## 4. Trigger a Workflow
+
 Using curl or an API tool like Postman, trigger an intent:
 
 ```bash

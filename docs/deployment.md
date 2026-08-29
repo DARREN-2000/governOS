@@ -7,6 +7,7 @@ GovernOS is built to scale from local testing to global, multi-region production
 GovernOS natively supports multi-service cloud deployment via Render using Blueprint definitions.
 
 We include a `render.yaml` file at the repository root. This orchestrates:
+
 1. **The Python API** (FastAPI)
 2. **The Node API** (Express)
 3. **The React Frontend** (Vite Static Site or SSR)

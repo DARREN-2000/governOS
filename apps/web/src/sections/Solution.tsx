@@ -1,12 +1,11 @@
-import { motion } from 'framer-motion'
-import { CheckCircle2, Workflow, ShieldCheck } from 'lucide-react'
+import { motion } from "framer-motion";
+import { CheckCircle2, Workflow, ShieldCheck } from "lucide-react";
 
 export function Solution() {
   return (
     <section className="py-24 bg-muted/30">
       <div className="container px-4 mx-auto md:px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center flex-row-reverse">
-
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -16,12 +15,16 @@ export function Solution() {
           >
             <div className="rounded-xl border border-border/50 bg-card p-6 shadow-2xl relative z-10">
               <div className="flex items-center space-x-2 mb-4 border-b border-border pb-4">
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">GOS</div>
-                <div className="text-sm font-mono text-muted-foreground">GovernOS Orchestration Engine</div>
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                  GOS
+                </div>
+                <div className="text-sm font-mono text-muted-foreground">
+                  GovernOS Orchestration Engine
+                </div>
               </div>
               <pre className="text-sm font-mono text-primary overflow-x-auto p-4 bg-muted/50 rounded-lg">
                 <code>
-{`{
+                  {`{
   "workflow_id": "wf_8a7b6c5d",
   "status": "pending_approval",
   "plan": [
@@ -58,26 +61,42 @@ export function Solution() {
               Deterministic, typed orchestration.
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              GovernOS acts as a typed middleware between LLMs and your APIs. Instead of executing actions directly, agents generate standardized workflow plans that are validated, audited, and approved before execution.
+              GovernOS acts as a typed middleware between LLMs and your APIs.
+              Instead of executing actions directly, agents generate
+              standardized workflow plans that are validated, audited, and
+              approved before execution.
             </p>
             <div className="space-y-4">
               <div className="flex items-start">
                 <CheckCircle2 className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                <p className="text-muted-foreground"><strong className="text-foreground">Typed Schemas:</strong> All LLM outputs are rigorously validated against Pydantic models.</p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Typed Schemas:</strong>{" "}
+                  All LLM outputs are rigorously validated against Pydantic
+                  models.
+                </p>
               </div>
               <div className="flex items-start">
                 <Workflow className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                <p className="text-muted-foreground"><strong className="text-foreground">Preview First:</strong> See exactly what an agent intends to do via a deterministic plan before any side effects occur.</p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Preview First:</strong>{" "}
+                  See exactly what an agent intends to do via a deterministic
+                  plan before any side effects occur.
+                </p>
               </div>
               <div className="flex items-start">
                 <ShieldCheck className="h-6 w-6 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                <p className="text-muted-foreground"><strong className="text-foreground">Granular Policies:</strong> Define organizational boundaries and require human sign-off based on risk levels.</p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">
+                    Granular Policies:
+                  </strong>{" "}
+                  Define organizational boundaries and require human sign-off
+                  based on risk levels.
+                </p>
               </div>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,41 +1,51 @@
-import { motion } from 'framer-motion'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/Card'
-import { ShieldCheck, Zap, Network, Eye } from 'lucide-react'
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/Card";
+import { ShieldCheck, Zap, Network, Eye } from "lucide-react";
 
 const features = [
   {
-    title: 'Preview Before Execute',
-    description: 'Every action generates a typed, deterministic plan. Review exactly what will happen before it does.',
+    title: "Preview Before Execute",
+    description:
+      "Every action generates a typed, deterministic plan. Review exactly what will happen before it does.",
     icon: Eye,
   },
   {
-    title: 'Human-in-the-loop Approvals',
-    description: 'Configure granular policies to require human approval for risky actions like destructive operations or external sends.',
+    title: "Human-in-the-loop Approvals",
+    description:
+      "Configure granular policies to require human approval for risky actions like destructive operations or external sends.",
     icon: ShieldCheck,
   },
   {
-    title: 'Idempotent by Design',
-    description: 'Built-in idempotency keys ensure workflows can be safely retried without unintended side-effects.',
+    title: "Idempotent by Design",
+    description:
+      "Built-in idempotency keys ensure workflows can be safely retried without unintended side-effects.",
     icon: Zap,
   },
   {
-    title: 'Universal Context Graph',
-    description: 'Our orchestration engine builds cross-file dependency graphs to provide machines with queryable context.',
+    title: "Universal Context Graph",
+    description:
+      "Our orchestration engine builds cross-file dependency graphs to provide machines with queryable context.",
     icon: Network,
   },
-]
+];
 
 export function Features() {
   return (
     <section id="features" className="py-24 bg-muted/50">
       <div className="container px-4 mx-auto md:px-6">
-
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-4 mb-16">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Engineered for reliability.
           </h2>
           <p className="text-lg text-muted-foreground">
-            GovernOS provides the critical safety rails needed to deploy autonomous systems in enterprise environments.
+            GovernOS provides the critical safety rails needed to deploy
+            autonomous systems in enterprise environments.
           </p>
         </div>
 
@@ -64,8 +74,7 @@ export function Features() {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
-  )
+  );
 }

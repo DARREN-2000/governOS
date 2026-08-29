@@ -1,6 +1,6 @@
 # GovernOS: Brand & UX Strategy
 
-*This document outlines the product design, branding, messaging, and UX strategy to position the platform for a Series A startup launch.*
+_This document outlines the product design, branding, messaging, and UX strategy to position the platform for a Series A startup launch._
 
 ## PART 1: PRODUCT BRAND
 
@@ -9,6 +9,7 @@
 **New Name:** **GovernOS** (Alternative: **Lexicon**)
 
 **Brand Identity:**
+
 - **Tagline:** The trust layer for autonomous agents.
 - **Elevator Pitch:** GovernOS turns probabilistic LLM outputs into deterministic execution. It maps your codebase context and enforces strict policy gates, ensuring your agents only take actions you explicitly approve.
 - **One Sentence:** GovernOS is an enterprise governance engine that makes AI agent workflows safe, typed, and auditable.
@@ -22,60 +23,70 @@
 ## PART 2: LANDING PAGE STRUCTURE
 
 **1. Hero**
-- *Purpose:* Establish immediate credibility and state exactly what the product does.
-- *Headline:* Autonomous agents you can trust.
-- *Copy:* Map codebase context, enforce policy gates, and require human approval before execution. The determinism your agents need.
-- *Visual Idea:* An animated, glowing dependency graph resolving chaos into a structured, linear pipeline of execution.
+
+- _Purpose:_ Establish immediate credibility and state exactly what the product does.
+- _Headline:_ Autonomous agents you can trust.
+- _Copy:_ Map codebase context, enforce policy gates, and require human approval before execution. The determinism your agents need.
+- _Visual Idea:_ An animated, glowing dependency graph resolving chaos into a structured, linear pipeline of execution.
 
 **2. Problem / The Status Quo**
-- *Purpose:* Agitate the pain point of "hallucinations" causing destructive actions.
-- *Headline:* Probabilistic models shouldn't have root access.
-- *Copy:* Sending unstructured text directly to APIs is a disaster waiting to happen.
-- *Visual Idea:* A split screen showing a messy, raw LLM JSON output (red) vs. a perfectly typed, validated GovernOS payload (green).
+
+- _Purpose:_ Agitate the pain point of "hallucinations" causing destructive actions.
+- _Headline:_ Probabilistic models shouldn't have root access.
+- _Copy:_ Sending unstructured text directly to APIs is a disaster waiting to happen.
+- _Visual Idea:_ A split screen showing a messy, raw LLM JSON output (red) vs. a perfectly typed, validated GovernOS payload (green).
 
 **3. Solution / The Trust Layer**
-- *Purpose:* Introduce the architecture.
-- *Headline:* Deterministic execution for AI workflows.
-- *Copy:* We parse your codebase to build exact context, validate intent against schemas, and wait for your approval.
-- *Visual Idea:* Interactive architecture diagram highlighting "Preview", "Policy Gate", and "Execute".
+
+- _Purpose:_ Introduce the architecture.
+- _Headline:_ Deterministic execution for AI workflows.
+- _Copy:_ We parse your codebase to build exact context, validate intent against schemas, and wait for your approval.
+- _Visual Idea:_ Interactive architecture diagram highlighting "Preview", "Policy Gate", and "Execute".
 
 **4. Features Grid**
-- *Purpose:* Deep dive into capabilities.
-- *Headline:* Built for enterprise scale.
-- *Visual Idea:* A bento-box style grid of cards with subtle border gradients on hover.
+
+- _Purpose:_ Deep dive into capabilities.
+- _Headline:_ Built for enterprise scale.
+- _Visual Idea:_ A bento-box style grid of cards with subtle border gradients on hover.
 
 **5. How It Works (The Loop)**
-- *Purpose:* Show the developer flow.
-- *Headline:* From Intent to Action.
-- *Copy:* 1. Intent. 2. Plan. 3. Gate. 4. Execute.
-- *Visual Idea:* A vertical, animated timeline stepping through a workflow run, resembling GitHub Actions logs.
+
+- _Purpose:_ Show the developer flow.
+- _Headline:_ From Intent to Action.
+- _Copy:_ 1. Intent. 2. Plan. 3. Gate. 4. Execute.
+- _Visual Idea:_ A vertical, animated timeline stepping through a workflow run, resembling GitHub Actions logs.
 
 **6. Security & Governance**
-- *Purpose:* Speak directly to the CISO.
-- *Headline:* Zero-trust by default.
-- *Copy:* Granular tenancy boundaries, complete audit logs, and dry-run execution.
-- *Visual Idea:* An interface mockup showing a security policy rule preventing a destructive action.
+
+- _Purpose:_ Speak directly to the CISO.
+- _Headline:_ Zero-trust by default.
+- _Copy:_ Granular tenancy boundaries, complete audit logs, and dry-run execution.
+- _Visual Idea:_ An interface mockup showing a security policy rule preventing a destructive action.
 
 **7. Developer Experience**
-- *Purpose:* Show code.
-- *Headline:* Beautiful APIs. Strict types.
-- *Copy:* Integrate the SDK in minutes. Let type hinting guide you.
-- *Visual Idea:* A macOS terminal window with syntax-highlighted Python/TypeScript code showing a seamless SDK implementation.
+
+- _Purpose:_ Show code.
+- _Headline:_ Beautiful APIs. Strict types.
+- _Copy:_ Integrate the SDK in minutes. Let type hinting guide you.
+- _Visual Idea:_ A macOS terminal window with syntax-highlighted Python/TypeScript code showing a seamless SDK implementation.
 
 **8. Social Proof / GitHub Momentum**
-- *Purpose:* Build FOMO and trust.
-- *Headline:* Backed by the community.
-- *Visual Idea:* Clean logo farm, GitHub star counter, and a "Top Open Source" badge.
+
+- _Purpose:_ Build FOMO and trust.
+- _Headline:_ Backed by the community.
+- _Visual Idea:_ Clean logo farm, GitHub star counter, and a "Top Open Source" badge.
 
 **9. CTA (Call to Action)**
-- *Purpose:* Convert visitor to user.
-- *Headline:* Ready to secure your agents?
-- *Copy:* Start building locally in seconds, or contact sales for enterprise deployment.
-- *Visual Idea:* A stark, high-contrast section. Just the text, two buttons, and a dark background.
+
+- _Purpose:_ Convert visitor to user.
+- _Headline:_ Ready to secure your agents?
+- _Copy:_ Start building locally in seconds, or contact sales for enterprise deployment.
+- _Visual Idea:_ A stark, high-contrast section. Just the text, two buttons, and a dark background.
 
 **10. Footer**
-- *Purpose:* Navigation and secondary links.
-- *Visual Idea:* Minimalist. 4 columns (Product, Resources, Company, Legal). Subtle text colors.
+
+- _Purpose:_ Navigation and secondary links.
+- _Visual Idea:_ Minimalist. 4 columns (Product, Resources, Company, Legal). Subtle text colors.
 
 ---
 
@@ -94,37 +105,37 @@
 ## PART 4: FEATURE CARDS (Bento Box)
 
 1. **Context Engine**
-   - *Description:* Loss-tolerant AST parsing.
-   - *Value:* Gives AI exact knowledge of your code.
-   - *Icon:* Code branch / Tree structure.
+   - _Description:_ Loss-tolerant AST parsing.
+   - _Value:_ Gives AI exact knowledge of your code.
+   - _Icon:_ Code branch / Tree structure.
 2. **Policy Gates**
-   - *Description:* Intercept high-risk actions before they happen.
-   - *Value:* Zero unauthorized infrastructure changes.
-   - *Icon:* Shield with a lock.
+   - _Description:_ Intercept high-risk actions before they happen.
+   - _Value:_ Zero unauthorized infrastructure changes.
+   - _Icon:_ Shield with a lock.
 3. **Human-in-the-Loop**
-   - *Description:* Pause execution for manual approval.
-   - *Value:* Complete control over money and data.
-   - *Icon:* Fingerprint or checkmark.
+   - _Description:_ Pause execution for manual approval.
+   - _Value:_ Complete control over money and data.
+   - _Icon:_ Fingerprint or checkmark.
 4. **Typed Schemas**
-   - *Description:* Enforce Pydantic validation on LLM output.
-   - *Value:* No more broken JSON payloads.
-   - *Icon:* Braces `{ }`.
+   - _Description:_ Enforce Pydantic validation on LLM output.
+   - _Value:_ No more broken JSON payloads.
+   - _Icon:_ Braces `{ }`.
 5. **Audit Trails**
-   - *Description:* Immutable logs of every workflow step.
-   - *Value:* SOC2 compliance out of the box.
-   - *Icon:* Database ledger.
+   - _Description:_ Immutable logs of every workflow step.
+   - _Value:_ SOC2 compliance out of the box.
+   - _Icon:_ Database ledger.
 6. **Multi-Tenant Memory**
-   - *Description:* Strict boundaries between orgs, projects, and users.
-   - *Value:* Total data privacy.
-   - *Icon:* Concentric circles / Venn diagram.
+   - _Description:_ Strict boundaries between orgs, projects, and users.
+   - _Value:_ Total data privacy.
+   - _Icon:_ Concentric circles / Venn diagram.
 7. **Dry-Run Previews**
-   - *Description:* See exactly what the agent *will* do.
-   - *Value:* Iterate safely before committing changes.
-   - *Icon:* Eye / Vision.
+   - _Description:_ See exactly what the agent _will_ do.
+   - _Value:_ Iterate safely before committing changes.
+   - _Icon:_ Eye / Vision.
 8. **Compensating Actions**
-   - *Description:* Automatic rollbacks if a step fails.
-   - *Value:* Resilient systems that self-heal.
-   - *Icon:* Rewind arrow.
+   - _Description:_ Automatic rollbacks if a step fails.
+   - _Value:_ Resilient systems that self-heal.
+   - _Icon:_ Rewind arrow.
 
 ---
 
@@ -133,15 +144,15 @@
 - **Typography:** Inter (for UI/Copy) and JetBrains Mono (for Code/Technical labels).
 - **Spacing:** Base-8 scale (8px, 16px, 24px, 32px, 64px, 128px).
 - **Color Palette:**
-  - *Background:* #000000 (Pure Black) and #0A0A0A (Elevated).
-  - *Primary Text:* #EDEDED.
-  - *Muted Text:* #888888.
-  - *Accent:* A hyper-vibrant Violet/Blue gradient (#6E56CF to #0072F5).
+  - _Background:_ #000000 (Pure Black) and #0A0A0A (Elevated).
+  - _Primary Text:_ #EDEDED.
+  - _Muted Text:_ #888888.
+  - _Accent:_ A hyper-vibrant Violet/Blue gradient (#6E56CF to #0072F5).
 - **Shadows:** Deep, soft, diffused shadows with a slight blue tint for hover states.
 - **Card Design:** 1px solid #222 border, 16px border-radius, #0A0A0A background, slight noise overlay.
 - **Button Design:**
-  - *Primary:* White background, black text, slight scale-down on click.
-  - *Secondary:* Transparent background, #222 border, white text on hover.
+  - _Primary:_ White background, black text, slight scale-down on click.
+  - _Secondary:_ Transparent background, #222 border, white text on hover.
 - **Animations:** Spring-based, fast, and snappy. (Damping: 20, Stiffness: 200).
 - **Glass Effects:** Used sparingly on sticky navigation and tooltips (backdrop-filter: blur(12px)).
 - **Theme:** Dark mode only. It emphasizes the "infrastructure layer" and terminal aesthetic.
@@ -161,23 +172,27 @@
 ## PART 7: USER JOURNEY
 
 **1. CTO / Founder:**
-- *10 seconds:* Understands this is a platform for making AI agents reliable.
-- *30 seconds:* Sees the architecture diagram and realizes it solves their compliance/security fears.
-- *2 minutes:* Reads the enterprise features (Audit, Multi-tenant) and clicks "Contact Sales."
+
+- _10 seconds:_ Understands this is a platform for making AI agents reliable.
+- _30 seconds:_ Sees the architecture diagram and realizes it solves their compliance/security fears.
+- _2 minutes:_ Reads the enterprise features (Audit, Multi-tenant) and clicks "Contact Sales."
 
 **2. Staff Engineer:**
-- *10 seconds:* Sees the terminal window mockup and code snippets.
-- *30 seconds:* Understands the AST parsing and NetworkX dependency graph logic.
-- *2 minutes:* Reads the docs, copies the `npm install` command, and checks the GitHub repo.
+
+- _10 seconds:_ Sees the terminal window mockup and code snippets.
+- _30 seconds:_ Understands the AST parsing and NetworkX dependency graph logic.
+- _2 minutes:_ Reads the docs, copies the `npm install` command, and checks the GitHub repo.
 
 **3. Investor:**
-- *10 seconds:* Gets the "Trust layer for AI" pitch.
-- *30 seconds:* Sees the enterprise positioning and recognizes massive market size.
-- *2 minutes:* Reviews the team/backers section (if present) and evaluates the polished execution.
+
+- _10 seconds:_ Gets the "Trust layer for AI" pitch.
+- _30 seconds:_ Sees the enterprise positioning and recognizes massive market size.
+- _2 minutes:_ Reviews the team/backers section (if present) and evaluates the polished execution.
 
 **4. Recruiter:**
-- *10 seconds:* Sees a highly polished, Vercel-tier product.
-- *30 seconds:* Realizes the creator possesses extreme full-stack, design, and product sensibilities.
+
+- _10 seconds:_ Sees a highly polished, Vercel-tier product.
+- _30 seconds:_ Realizes the creator possesses extreme full-stack, design, and product sensibilities.
 
 ---
 
@@ -245,6 +260,7 @@
 ## PART 12: OUTPUT DOCUMENTATION
 
 **Complete Sitemap:**
+
 - `/` (Home)
 - `/docs` (Documentation / Quickstart)
 - `/architecture` (Deep dive into graph parsing)
@@ -252,6 +268,7 @@
 - `/blog` (Technical deep dives)
 
 **Component Hierarchy:**
+
 - `PageWrapper` (Handles dark mode context, smooth scroll)
   - `Navigation` (Sticky, glassmorphism)
   - `HeroSection` (Framer motion text reveal, Magic UI background)
@@ -260,6 +277,7 @@
   - `Footer` (Simple link list)
 
 **Developer Handoff Checklist:**
+
 - [ ] Initialize Next.js 14 App Router.
 - [ ] Install TailwindCSS, framer-motion, lucide-react.
 - [ ] Configure `tailwind.config.ts` with brand colors and spacing.

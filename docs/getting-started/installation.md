@@ -13,22 +13,26 @@ GovernOS is designed to be easily deployable in various environments, from local
 ## Local Development (Source)
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/organization/governos.git
    cd governos
    ```
 
 2. **Install Node.js Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Install Python Dependencies**
+
    ```bash
    poetry install
    ```
 
 4. **Start Local Services**
+
    ```bash
    docker compose up -d
    ```
@@ -49,7 +53,7 @@ For a production-ready setup, we recommend using Docker Compose or Kubernetes.
 ### Docker Compose
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   api:
     image: governos/api:latest

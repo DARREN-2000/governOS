@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { Card } from '@/components/Card'
+import { motion } from "framer-motion";
+import { Card } from "@/components/Card";
 
 export function Screenshots() {
   return (
@@ -10,7 +10,8 @@ export function Screenshots() {
             Designed for Operators
           </h2>
           <p className="text-lg text-muted-foreground">
-            A premium interface for managing, reviewing, and auditing your agentic workflows.
+            A premium interface for managing, reviewing, and auditing your
+            agentic workflows.
           </p>
         </div>
 
@@ -49,7 +50,9 @@ export function Screenshots() {
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-semibold">Approval Queue</h3>
-                    <p className="text-sm text-muted-foreground">3 actions require review</p>
+                    <p className="text-sm text-muted-foreground">
+                      3 actions require review
+                    </p>
                   </div>
                   <div className="h-10 w-32 bg-primary text-primary-foreground rounded-md flex items-center justify-center text-sm font-medium">
                     Run Workflow
@@ -58,7 +61,10 @@ export function Screenshots() {
 
                 <div className="space-y-4 relative z-10">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="p-4 border border-border/50 rounded-lg flex items-center justify-between bg-card hover:bg-muted/20 transition-colors">
+                    <div
+                      key={i}
+                      className="p-4 border border-border/50 rounded-lg flex items-center justify-between bg-card hover:bg-muted/20 transition-colors"
+                    >
                       <div className="flex items-center space-x-4">
                         <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
                           <div className="w-5 h-5 bg-border rounded-sm" />
@@ -69,8 +75,12 @@ export function Screenshots() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <div className="h-8 w-20 bg-destructive/10 text-destructive rounded text-xs flex items-center justify-center font-medium">Reject</div>
-                        <div className="h-8 w-20 bg-primary/10 text-primary rounded text-xs flex items-center justify-center font-medium">Approve</div>
+                        <div className="h-8 w-20 bg-destructive/10 text-destructive rounded text-xs flex items-center justify-center font-medium">
+                          Reject
+                        </div>
+                        <div className="h-8 w-20 bg-primary/10 text-primary rounded text-xs flex items-center justify-center font-medium">
+                          Approve
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -81,5 +91,5 @@ export function Screenshots() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

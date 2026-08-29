@@ -1,21 +1,21 @@
 import ast
 import os
-from typing import List, Tuple
 
-from governos.models import Node, Edge
 from governos.logger import setup_logger
+from governos.models import Edge, Node
 
 logger = setup_logger(__name__)
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
+
 class CodeParser:
     def __init__(self) -> None:
         pass
 
-    def parse_file(self, filepath: str) -> Tuple[List[Node], List[Edge]]:
-        nodes: List[Node] = []
-        edges: List[Edge] = []
+    def parse_file(self, filepath: str) -> tuple[list[Node], list[Edge]]:
+        nodes: list[Node] = []
+        edges: list[Edge] = []
 
         if not os.path.isfile(filepath):
             logger.error(f"Not a regular file: {filepath}")
@@ -23,7 +23,9 @@ class CodeParser:
 
         try:
             if os.path.getsize(filepath) > MAX_FILE_SIZE:
-                logger.error(f"File {filepath} exceeds MAX_FILE_SIZE limit of {MAX_FILE_SIZE} bytes.")
+                logger.error(
+                    f"File {filepath} exceeds MAX_FILE_SIZE limit of {MAX_FILE_SIZE} bytes."
+                )
                 return nodes, edges
         except OSError as e:
             logger.error(f"Failed to get file size for {filepath}: {e}")
@@ -49,12 +51,14 @@ class CodeParser:
             return nodes, edges
 
         file_id = filepath
-        nodes.append(Node(
-            id=file_id,
-            name=os.path.basename(filepath),
-            type="file",
-            filepath=filepath,
-        ))
+        nodes.append(
+            Node(
+                id=file_id,
+                name=os.path.basename(filepath),
+                type="file",
+                filepath=filepath,
+            )
+        )
 
         # We'll use an AST visitor to extract classes, functions, and imports
         class DependencyVisitor(ast.NodeVisitor):
@@ -64,15 +68,21 @@ class CodeParser:
             def visit_Import(self, node: ast.Import) -> None:
                 for alias in node.names:
                     import_id = f"import_{alias.name}"
-                    nodes.append(Node(
-                        id=import_id,
-                        name=alias.name,
-                        type="import",
-                        filepath=filepath,
-                        start_line=node.lineno,
-                        end_line=node.end_lineno
-                    ))
-                    edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
+                    nodes.append(
+                        Node(
+                            id=import_id,
+                            name=alias.name,
+                            type="import",
+                            filepath=filepath,
+                            start_line=node.lineno,
+                            end_line=node.end_lineno,
+                        )
+                    )
+                    edges.append(
+                        Edge(
+                            source=self.current_parent, target=import_id, type="imports"
+                        )
+                    )
                 self.generic_visit(node)
 
             def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
@@ -80,30 +90,40 @@ class CodeParser:
                 for alias in node.names:
                     name = f"{module}.{alias.name}" if module else alias.name
                     import_id = f"import_{name}"
-                    nodes.append(Node(
-                        id=import_id,
-                        name=name,
-                        type="import",
-                        filepath=filepath,
-                        start_line=node.lineno,
-                        end_line=node.end_lineno
-                    ))
-                    edges.append(Edge(source=self.current_parent, target=import_id, type="imports"))
+                    nodes.append(
+                        Node(
+                            id=import_id,
+                            name=name,
+                            type="import",
+                            filepath=filepath,
+                            start_line=node.lineno,
+                            end_line=node.end_lineno,
+                        )
+                    )
+                    edges.append(
+                        Edge(
+                            source=self.current_parent, target=import_id, type="imports"
+                        )
+                    )
                 self.generic_visit(node)
 
             def visit_ClassDef(self, node: ast.ClassDef) -> None:
                 class_id = f"{filepath}:{node.name}"
                 docstring = ast.get_docstring(node)
-                nodes.append(Node(
-                    id=class_id,
-                    name=node.name,
-                    type="class",
-                    filepath=filepath,
-                    start_line=node.lineno,
-                    end_line=node.end_lineno,
-                    docstring=docstring
-                ))
-                edges.append(Edge(source=self.current_parent, target=class_id, type="contains"))
+                nodes.append(
+                    Node(
+                        id=class_id,
+                        name=node.name,
+                        type="class",
+                        filepath=filepath,
+                        start_line=node.lineno,
+                        end_line=node.end_lineno,
+                        docstring=docstring,
+                    )
+                )
+                edges.append(
+                    Edge(source=self.current_parent, target=class_id, type="contains")
+                )
 
                 old_parent = self.current_parent
                 self.current_parent = class_id
@@ -113,16 +133,20 @@ class CodeParser:
             def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
                 func_id = f"{self.current_parent}:{node.name}"
                 docstring = ast.get_docstring(node)
-                nodes.append(Node(
-                    id=func_id,
-                    name=node.name,
-                    type="function",
-                    filepath=filepath,
-                    start_line=node.lineno,
-                    end_line=node.end_lineno,
-                    docstring=docstring
-                ))
-                edges.append(Edge(source=self.current_parent, target=func_id, type="contains"))
+                nodes.append(
+                    Node(
+                        id=func_id,
+                        name=node.name,
+                        type="function",
+                        filepath=filepath,
+                        start_line=node.lineno,
+                        end_line=node.end_lineno,
+                        docstring=docstring,
+                    )
+                )
+                edges.append(
+                    Edge(source=self.current_parent, target=func_id, type="contains")
+                )
 
                 old_parent = self.current_parent
                 self.current_parent = func_id
@@ -130,15 +154,29 @@ class CodeParser:
                 self.current_parent = old_parent
 
             def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
-                self.visit_FunctionDef(node) # type: ignore
+                self.visit_FunctionDef(node)  # type: ignore
 
             def visit_Call(self, node: ast.Call) -> None:
                 if isinstance(node.func, ast.Name):
                     target_name = node.func.id
-                    edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
-                elif isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name):
+                    edges.append(
+                        Edge(
+                            source=self.current_parent,
+                            target=f"call_{target_name}",
+                            type="calls",
+                        )
+                    )
+                elif isinstance(node.func, ast.Attribute) and isinstance(
+                    node.func.value, ast.Name
+                ):
                     target_name = f"{node.func.value.id}.{node.func.attr}"
-                    edges.append(Edge(source=self.current_parent, target=f"call_{target_name}", type="calls"))
+                    edges.append(
+                        Edge(
+                            source=self.current_parent,
+                            target=f"call_{target_name}",
+                            type="calls",
+                        )
+                    )
                 self.generic_visit(node)
 
         visitor = DependencyVisitor()

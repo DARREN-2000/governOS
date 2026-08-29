@@ -37,12 +37,12 @@ GovernOS solves this by introducing a **deterministic trust layer** between the 
 
 ### 🌟 Core Capabilities
 
-* **Preview Before Execute:** LLM intents are compiled into typed Execution Plans. You always see exactly what will happen before it does.
-* **Deterministic Policy Enforcement:** Built-in rules block risky plans (e.g., spending over $100, deleting production databases).
-* **Human-in-the-Loop (HITL):** Asynchronous approval workflows for actions flagged by the policy engine.
-* **Idempotent Execution:** Built-in support for retries, state recovery, and automatic rollbacks via the `compensate()` contract.
-* **Contextual Memory Isolation:** Scoped context (Personal, Project, Organization) prevents data leakage between multi-tenant environments.
-* **Premium UX Dashboard:** A beautiful, developer-first React interface for tracking workflow state and approving actions.
+- **Preview Before Execute:** LLM intents are compiled into typed Execution Plans. You always see exactly what will happen before it does.
+- **Deterministic Policy Enforcement:** Built-in rules block risky plans (e.g., spending over $100, deleting production databases).
+- **Human-in-the-Loop (HITL):** Asynchronous approval workflows for actions flagged by the policy engine.
+- **Idempotent Execution:** Built-in support for retries, state recovery, and automatic rollbacks via the `compensate()` contract.
+- **Contextual Memory Isolation:** Scoped context (Personal, Project, Organization) prevents data leakage between multi-tenant environments.
+- **Premium UX Dashboard:** A beautiful, developer-first React interface for tracking workflow state and approving actions.
 
 <br />
 
@@ -94,11 +94,11 @@ graph TD
 
 ### Component Responsibilities
 
-| Component | Stack | Responsibility |
-| :--- | :--- | :--- |
-| **Python Core** | Python 3.10+, FastAPI, NetworkX, AST | Builds dependency graphs, compiles machine-queryable context, policy evaluation. |
-| **Backend API** | Node.js 20+, Express, SQLite / Temporal | Orchestrates requests, manages database state, exposes endpoints to frontend. |
-| **Web Dashboard**| React 19, Vite, Tailwind CSS, shadcn/ui | Developer-first interface for approving workflows and monitoring systems. |
+| Component         | Stack                                   | Responsibility                                                                   |
+| :---------------- | :-------------------------------------- | :------------------------------------------------------------------------------- |
+| **Python Core**   | Python 3.10+, FastAPI, NetworkX, AST    | Builds dependency graphs, compiles machine-queryable context, policy evaluation. |
+| **Backend API**   | Node.js 20+, Express, SQLite / Temporal | Orchestrates requests, manages database state, exposes endpoints to frontend.    |
+| **Web Dashboard** | React 19, Vite, Tailwind CSS, shadcn/ui | Developer-first interface for approving workflows and monitoring systems.        |
 
 <br />
 
@@ -108,9 +108,9 @@ Get your local environment running in minutes. GovernOS supports fully container
 
 ### Prerequisites
 
-* [Docker & Docker Compose](https://docs.docker.com/compose/install/)
-* [Python 3.10+](https://www.python.org/downloads/) & [Poetry](https://python-poetry.org/docs/#installation)
-* [Node.js 20+](https://nodejs.org/en/download/) & [pnpm](https://pnpm.io/installation) (strictly `pnpm` only)
+- [Docker & Docker Compose](https://docs.docker.com/compose/install/)
+- [Python 3.10+](https://www.python.org/downloads/) & [Poetry](https://python-poetry.org/docs/#installation)
+- [Node.js 20+](https://nodejs.org/en/download/) & [pnpm](https://pnpm.io/installation) (strictly `pnpm` only)
 
 ### Installation
 
@@ -122,10 +122,12 @@ cd governos
 # 2. Run the full stack via Docker Compose (Recommended)
 docker-compose up --build
 ```
+
 > **Services Started:**
-> * **Dashboard:** `http://localhost:80` (or `http://localhost:5173` if run natively)
-> * **Node API:** `http://localhost:3001`
-> * **Python Engine:** `http://localhost:8000`
+>
+> - **Dashboard:** `http://localhost:80` (or `http://localhost:5173` if run natively)
+> - **Node API:** `http://localhost:3001`
+> - **Python Engine:** `http://localhost:8000`
 
 ### Manual Native Start
 
@@ -167,9 +169,9 @@ curl -X POST http://localhost:3001/api/v1/intents \
 
 GovernOS is built on a foundation of strict security paradigms. Security is not a feature; it's the core premise of the framework.
 
-* **File Parsing Safety:** All memory operations validating files verify `MAX_FILE_SIZE` and `os.path.isfile` before buffering, preventing DoS.
-* **Side-Effecting Actions:** All side-effect actions **must** implement `preview()`, `execute()`, and `compensate()` to ensure atomic rollbacks.
-* **Auditing:** Every workflow mutation is written to an immutable event ledger.
+- **File Parsing Safety:** All memory operations validating files verify `MAX_FILE_SIZE` and `os.path.isfile` before buffering, preventing DoS.
+- **Side-Effecting Actions:** All side-effect actions **must** implement `preview()`, `execute()`, and `compensate()` to ensure atomic rollbacks.
+- **Auditing:** Every workflow mutation is written to an immutable event ledger.
 
 Please consult our [Threat Model](docs/security/threat-model.md) and [Security Policy](SECURITY.md) before pushing to production.
 
@@ -179,8 +181,8 @@ Please consult our [Threat Model](docs/security/threat-model.md) and [Security P
 
 The internal Python Engine utilizes highly optimized data structures to ensure latency is kept to a minimum:
 
-* **Serialization Optimization:** Tight data loops (e.g. `networkx` graph construction) explicitly avoid Pydantic's `model_dump()` in favor of high-performance `__dict__` serialization.
-* **AST Parsing:** Python's built-in `ast` module provides loss-tolerant syntax parsing for context building.
+- **Serialization Optimization:** Tight data loops (e.g. `networkx` graph construction) explicitly avoid Pydantic's `model_dump()` in favor of high-performance `__dict__` serialization.
+- **AST Parsing:** Python's built-in `ast` module provides loss-tolerant syntax parsing for context building.
 
 <br />
 

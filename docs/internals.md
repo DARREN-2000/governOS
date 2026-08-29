@@ -14,6 +14,7 @@ When an intent is received, GovernOS must determine the blast radius and context
 During graph generation, the engine may process thousands of nodes in milliseconds. We identified a significant performance bottleneck when utilizing Pydantic for serialization in tight loops.
 
 **Anti-Pattern:**
+
 ```python
 # Slow: Calling model_dump() repeatedly
 for node in large_node_list:
@@ -21,16 +22,19 @@ for node in large_node_list:
 ```
 
 **Optimized Pattern:**
+
 ```python
 # Fast: Utilizing __dict__ directly or manual dictionary mapping
 for node in large_node_list:
     graph.add_node(node.id, **node.__dict__)
 ```
+
 By bypassing Pydantic's recursive validation logic during read-heavy graph operations, we achieved a 70% reduction in context generation latency. Pydantic is still strictly utilized at the API boundaries (FastAPI endpoints) to ensure input validation.
 
 ## Workflow Execution Loop
 
 The execution engine follows a strict state machine:
+
 1. `DRAFTING`: The LLM is generating the workflow plan.
 2. `PREVIEWING`: Dry-running the steps.
 3. `POLICY_CHECK`: Verifying constraints.

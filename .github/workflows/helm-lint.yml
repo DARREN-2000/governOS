@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'infra/helm/**'
+      - "infra/helm/**"
   pull_request:
     branches: [main]
     paths:
-      - 'infra/helm/**'
+      - "infra/helm/**"
 
 permissions:
   contents: read

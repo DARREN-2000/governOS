@@ -1,5 +1,6 @@
 from governos.graph import DependencyGraph
-from governos.models import Node, Edge
+from governos.models import Edge, Node
+
 
 def test_graph_add_nodes_edges() -> None:
     graph = DependencyGraph()

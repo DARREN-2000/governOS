@@ -1,12 +1,11 @@
-import { motion } from 'framer-motion'
-import { Terminal } from 'lucide-react'
+import { motion } from "framer-motion";
+import { Terminal } from "lucide-react";
 
 export function DeveloperExperience() {
   return (
     <section id="developers" className="py-24 bg-background">
       <div className="container px-4 mx-auto md:px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -17,7 +16,9 @@ export function DeveloperExperience() {
               Developer First
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              GovernOS was built by engineers, for engineers. Our Action SDK makes it trivial to expose your existing APIs and scripts to autonomous agents safely.
+              GovernOS was built by engineers, for engineers. Our Action SDK
+              makes it trivial to expose your existing APIs and scripts to
+              autonomous agents safely.
             </p>
             <ul className="space-y-4 text-muted-foreground">
               <li className="flex items-center">
@@ -44,11 +45,13 @@ export function DeveloperExperience() {
           >
             <div className="flex items-center px-4 py-2 border-b border-white/10 bg-[#161b22]">
               <Terminal className="h-4 w-4 text-zinc-400 mr-2" />
-              <span className="text-xs text-zinc-400 font-mono">my_action.py</span>
+              <span className="text-xs text-zinc-400 font-mono">
+                my_action.py
+              </span>
             </div>
             <div className="p-4 overflow-x-auto text-sm font-mono text-zinc-300">
               <pre>
-<code>{`from governos import Action, Context
+                <code>{`from governos import Action, Context
 from pydantic import BaseModel
 
 class InputArgs(BaseModel):
@@ -68,9 +71,8 @@ class PromoteUser(Action[InputArgs]):
               </pre>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -5,9 +5,11 @@ These examples show how GovernOS handles complex, multi-step orchestrated workfl
 ## 1. Employee Offboarding Workflow
 
 **Intent:**
+
 > "Offboard employee jsmith@company.com. Revoke AWS access, lock their GitHub account, and notify HR."
 
 **Generated Plan:**
+
 ```yaml
 steps:
   - id: revoke_aws

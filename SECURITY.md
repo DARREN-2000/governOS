@@ -1,17 +1,34 @@
-# GovernOS Security Policy
+# Security Policy
 
-GovernOS is built to secure AI infrastructure. We take vulnerabilities in our own codebase extremely seriously.
+## Supported Versions
+
+We currently provide security updates for the following versions of Inference Control Plane:
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 1.0.x   | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-**DO NOT report security vulnerabilities via public GitHub issues.**
+Security is a top priority for Inference Control Plane, especially given its role as an enterprise gateway handling sensitive AI traffic.
 
-If you discover a vulnerability, please email `security@governos.io` with a detailed report. We aim to respond within 48 hours.
+If you discover a security vulnerability in Inference Control Plane, please **DO NOT** disclose it publicly by creating a GitHub issue.
 
-## Security Posture
-- **Input Validation:** File ingestion pipelines enforce `MAX_FILE_SIZE` and standard file-type verification to prevent DoS attacks.
-- **Least Privilege:** All plugins and action executors are sandboxed and operate with the minimum required scopes.
-- **Audit Logging:** Every state change in a workflow is cryptographically signed and stored in an immutable audit ledger.
+Instead, please report it via email to `security@inference_control_plane.ai` or via a direct message to the maintainers.
 
-## Supported Versions
-Currently, only the `main` branch and the latest stable release tag receive security updates.
+### What to include in your report:
+
+- A clear description of the vulnerability.
+- Steps to reproduce the issue.
+- Potential impact (e.g., bypass rate limits, exfiltrate API keys, denial of service).
+- If possible, a suggested fix or mitigation.
+
+### Our Response Process:
+
+1. We will acknowledge receipt of your vulnerability report within 48 hours.
+2. We will investigate and verify the vulnerability.
+3. If confirmed, we will develop a patch and issue a security advisory on GitHub (CVE if appropriate).
+4. We will credit you for the discovery in the advisory, unless you prefer to remain anonymous.
+
+Thank you for helping keep Inference Control Plane secure!

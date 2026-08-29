@@ -6,9 +6,10 @@ GovernOS v1.0 introduces breaking changes to the Intent API and Action Plugin co
 
 ### 1. Action Contract Changes
 
-In v0.x, plugins only required an `execute()` method. In v1.0, all plugins *must* implement `preview()` and `compensate()`.
+In v0.x, plugins only required an `execute()` method. In v1.0, all plugins _must_ implement `preview()` and `compensate()`.
 
 **Old:**
+
 ```typescript
 class MyAction {
   async execute(params) { ... }
@@ -16,6 +17,7 @@ class MyAction {
 ```
 
 **New:**
+
 ```typescript
 class MyAction {
   async preview(params) { ... }

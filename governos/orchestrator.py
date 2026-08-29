@@ -1,26 +1,36 @@
 import os
-from typing import List
 
-from governos.parser import CodeParser
 from governos.graph import DependencyGraph
-from governos.models import GraphData
 from governos.logger import setup_logger
+from governos.models import GraphData
+from governos.parser import CodeParser
 
 logger = setup_logger(__name__)
+
 
 class Orchestrator:
     def __init__(self) -> None:
         self.parser = CodeParser()
         self.graph = DependencyGraph()
 
-    def process_directory(self, directory: str, exclude_dirs: List[str] | None = None) -> GraphData:
+    def process_directory(
+        self, directory: str, exclude_dirs: list[str] | None = None
+    ) -> GraphData:
         """Processes a directory to build a full cross-file dependency graph."""
         if exclude_dirs is None:
-            exclude_dirs = [".git", "__pycache__", "venv", ".venv", "node_modules", "dist", "build"]
+            exclude_dirs = [
+                ".git",
+                "__pycache__",
+                "venv",
+                ".venv",
+                "node_modules",
+                "dist",
+                "build",
+            ]
 
         logger.info(f"Starting analysis of directory: {directory}")
 
-        python_files: List[str] = []
+        python_files: list[str] = []
         for root, dirs, files in os.walk(directory):
             # Exclude directories
             dirs[:] = [d for d in dirs if d not in exclude_dirs]

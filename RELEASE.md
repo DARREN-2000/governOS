@@ -17,6 +17,7 @@ GovernOS uses automated semantic versioning and changelog generation via Semanti
 ## Automated Workflow
 
 When a commit lands on `main`:
+
 1. The `.github/workflows/release.yml` GitHub Action triggers.
 2. It analyzes the commit history since the last tag.
 3. It determines the next version number.

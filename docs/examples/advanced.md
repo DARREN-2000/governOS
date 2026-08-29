@@ -7,9 +7,11 @@ These examples demonstrate the full power of GovernOS when dealing with dynamic 
 This scenario demonstrates the `compensate()` contract.
 
 **Intent:**
+
 > "Deploy version 2.0.0 of the billing service. If it fails health checks, roll back to 1.9.0."
 
 **Generated Plan:**
+
 ```yaml
 steps:
   - id: deploy_v2
@@ -26,6 +28,7 @@ steps:
 ```
 
 **Execution Flow:**
+
 1. The `kubernetes/deploy` action succeeds and updates the deployment.
 2. The `http/check` action fails (e.g., returns 503).
 3. The Executor automatically runs the `compensate()` method of the `kubernetes/deploy` plugin, which reverts the deployment back to `1.9.0`.
@@ -33,9 +36,11 @@ steps:
 ## 2. Dynamic Policy Evaluation
 
 **Intent:**
+
 > "Provision a large EC2 instance for the data science team."
 
 **Policy Engine Rules:**
+
 ```yaml
 rules:
   - id: limit_ec2_size

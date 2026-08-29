@@ -34,7 +34,7 @@ Redis is used as a temporary cache and requires no persistent backups. Data loss
 
 ### Executor Failure
 
-The Executor service relies on a durable queue (NATS or Temporal). If an Executor node crashes during execution, the task will be automatically retried by another available node. Action plugins *must* be strictly idempotent to prevent unintended side effects during retries.
+The Executor service relies on a durable queue (NATS or Temporal). If an Executor node crashes during execution, the task will be automatically retried by another available node. Action plugins _must_ be strictly idempotent to prevent unintended side effects during retries.
 
 ## Routine Maintenance
 

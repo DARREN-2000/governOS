@@ -1,37 +1,50 @@
-# Contributing to GovernOS
+# Contributing to Inference Control Plane
 
-First off, thank you for considering contributing to GovernOS! It's people like you that make GovernOS such a great tool.
+First off, thank you for considering contributing to Inference Control Plane! It's people like you that make open-source software great.
 
-GovernOS is positioned as the standard trust layer for autonomous agents in the enterprise. We expect all contributions to maintain a high bar of engineering excellence, security, and documentation.
+Inference Control Plane aims to be the standard open-source Inference Control Plane. We welcome contributions from everyone, whether it's fixing bugs, adding new features, improving documentation, or optimizing performance.
 
-## How Can I Contribute?
+## Getting Started
 
-### 1. Reporting Bugs
-- Ensure the bug was not already reported by searching on GitHub under Issues.
-- If you're unable to find an open issue addressing the problem, open a new one.
-- Use the provided Bug Report issue template.
+1. **Read the Docs:** Familiarize yourself with the architecture and core concepts by reading the `docs/` folder.
+2. **Find an Issue:** Look for issues tagged `good first issue` or `help wanted` in the GitHub issue tracker.
+3. **Discuss Before Building:** If you plan to add a major feature, please open an issue to discuss the design with the maintainers before writing code. This saves everyone time!
 
-### 2. Suggesting Enhancements
-- Open a new issue with the Feature Request template.
-- Provide a clear and detailed explanation of the feature and the problem it solves.
+## Local Development Setup
 
-### 3. Pull Requests
-- Fork the repo and create your branch from `main`.
-- If you've added code that should be tested, add tests.
-- Ensure the test suite passes (`poetry run pytest tests/`).
-- Ensure your code lints correctly (`poetry run ruff check .`).
-- Ensure type hints are accurate (`poetry run mypy .`).
-- If you change `pyproject.toml`, run `poetry lock`.
-- Frontend changes must strictly use `pnpm`. No `npm` or `yarn`.
+Please refer to the [Installation Guide](docs/installation.md) and [Developer Experience Guide](docs/developer-experience.md) for detailed instructions on setting up the Python backend and Next.js frontend.
 
-## Development Environment Setup
+## Pull Request Process
 
-Please see our [Installation Guide](docs/getting-started/installation.md) and [Quickstart](docs/getting-started/quickstart.md) for detailed setup instructions.
+1. **Fork the Repo:** Create a fork and clone it locally.
+2. **Branch Naming:** Create a branch for your feature or bug fix (e.g., `feature/semantic-cache` or `fix/token-calculation`).
+3. **Write Code & Tests:**
+   - Ensure your code follows the existing style.
+   - For backend changes, add asynchronous unit tests in `tests/`.
+   - Run the linting tools before committing: `make lint-backend`.
+4. **Submit a PR:**
+   - Fill out the provided Pull Request Template completely.
+   - Link any relevant issues.
+   - Wait for CI checks (GitHub Actions) to pass.
+5. **Code Review:** A maintainer will review your code. We may request changes. Please be responsive!
 
-## Development Constraints and Rules
-- **UI/UX**: Strictly React 19, Vite, Tailwind CSS, shadcn/ui.
-- **Python**: Strict type hints. Fast serialization inside tight loops (avoid `Pydantic.model_dump()` in loops).
-- **Security**: Validate paths and file sizes before parsing. Read `SECURITY.md`.
-- **Architecture**: Actions must implement `preview()`, `execute()`, and `compensate()`.
+## Coding Standards
 
-By participating in this project, you agree to abide by the GovernOS [Code of Conduct](CODE_OF_CONDUCT.md).
+### Backend (Python)
+
+- We use **FastAPI** and strict **asyncio**. Do not introduce blocking I/O calls.
+- Use **Pydantic** for all data validation.
+- Format code using `ruff` (`uv run ruff format src/ tests/`).
+- Use Type Hints (`-> list[str]`, etc.) everywhere.
+
+### Frontend (Next.js/React)
+
+- Use **Tailwind CSS v4** exclusively for styling.
+- Use **pnpm** (not npm or yarn).
+- Ensure the build succeeds (`pnpm run build`) without TypeScript errors.
+
+## Community
+
+If you have questions, please start a [GitHub Discussion](https://github.com/DARREN-2000/governOS/discussions).
+
+Thank you for contributing!

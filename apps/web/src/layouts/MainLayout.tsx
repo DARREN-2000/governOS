@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom'
-import { Navigation } from '@/sections/Navigation'
-import { Footer } from '@/sections/Footer'
+import { Outlet } from "react-router-dom";
+import { Navigation } from "@/sections/Navigation";
+import { Footer } from "@/sections/Footer";
 
 export function MainLayout() {
   return (
@@ -11,5 +11,5 @@ export function MainLayout() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

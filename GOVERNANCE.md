@@ -1,13 +1,31 @@
-# Project Governance
+# Inference Control Plane Governance
 
-GovernOS operates as a benevolent dictator for now (BDFL) model with input from core maintainers.
+This document outlines the governance model for the Inference Control Plane project.
 
-## Roles
+## Core Team
 
-- **Users:** Anyone utilizing GovernOS. Users are encouraged to participate in discussions and provide feedback.
-- **Contributors:** Users who have submitted PRs that have been merged.
-- **Maintainers:** Contributors who have shown dedication to the project and have been granted merge rights. Maintainers review PRs and guide the architectural direction.
-- **Project Lead:** Holds final say on major architectural changes and release timelines.
+The Inference Control Plane project is maintained by the core team. The core team is responsible for:
+
+- Technical direction and roadmap
+- Reviewing and merging pull requests
+- Triaging issues and providing support
+- Enforcing the Code of Conduct
+- Releasing new versions
 
 ## Decision Making
-Major changes require an issue or architecture proposal (like `architecture_proposal.md`) to be discussed before implementation.
+
+Decisions are made by consensus among the core team. If consensus cannot be reached, the project lead will make the final decision. We strive for transparency and will document the rationale for major technical decisions in architecture or design documents.
+
+## Becoming a Maintainer
+
+We welcome community members to become maintainers. Maintainers are expected to:
+
+- Consistently contribute high-quality code, documentation, or support
+- Uphold the project's standards and Code of Conduct
+- Help triage issues and review pull requests
+
+If you are interested in becoming a maintainer, please reach out to the core team via a GitHub issue or discussion.
+
+## Modifying Governance
+
+This governance model can be modified by consensus of the core team.

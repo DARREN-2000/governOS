@@ -1,14 +1,32 @@
-# GovernOS Support
+# Support
 
-Welcome to the GovernOS support guide.
+Welcome to the Inference Control Plane support page! We're here to help you get the most out of our open-source LLM gateway.
 
-## Community Support
-- **Discord:** Join our active community [here](#) to discuss architectures, agent designs, and get help from maintainers.
-- **GitHub Discussions:** Use [Discussions](https://github.com/organization/governos/discussions) for feature ideas, Q&A, and general project chatter.
-- **GitHub Issues:** Use Issues strictly for bug reports and tracked feature requests.
+## Getting Help
+
+### Community Support
+
+For general questions, configuration help, and best practices, please use our community channels:
+
+- **[GitHub Discussions](https://github.com/DARREN-2000/governOS/discussions)**: The best place for Q&A and architectural discussions.
+
+### Bug Reports
+
+If you've found a bug in the code, please file an issue:
+
+- **[GitHub Issues](https://github.com/DARREN-2000/governOS/issues)**: Ensure you provide clear steps to reproduce the issue, your configuration (without secrets), and relevant logs.
+
+### Feature Requests
+
+Have an idea to improve Inference Control Plane?
+
+- Submit a feature request via **[GitHub Issues](https://github.com/DARREN-2000/governOS/issues)** using the Feature Request template.
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability, **please DO NOT report it in a public issue**.
+Instead, refer to our [SECURITY.md](SECURITY.md) for instructions on how to responsibly disclose the issue to our security team.
 
 ## Enterprise Support
-For enterprise customers running GovernOS in production, we offer dedicated SLAs, architecture reviews, and private Slack channels. Please contact `enterprise@governos.io`.
 
-## Troubleshooting
-Please check our [FAQ](docs/troubleshooting/faq.md) and our [Local Development Runbook](docs/runbooks/local-development.md) before opening a ticket.
+At this time, Inference Control Plane is a community-driven open-source project. If you are an enterprise seeking commercial support, SLAs, or custom integrations, please reach out via our GitHub Discussions to inquire about partnership opportunities.

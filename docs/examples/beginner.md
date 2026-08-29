@@ -7,9 +7,11 @@ These examples demonstrate basic usage of the GovernOS platform.
 This intent creates a new private repository.
 
 **Intent (Natural Language):**
+
 > "Create a new private GitHub repository called 'my-new-project' and initialize it with a README."
 
 **Generated Plan:**
+
 ```json
 {
   "action": "github/create_repository",
@@ -24,9 +26,11 @@ This intent creates a new private repository.
 ## 2. Sending a Slack Notification
 
 **Intent:**
+
 > "Send a message to the #engineering channel announcing the deploy is complete."
 
 **Generated Plan:**
+
 ```json
 {
   "action": "slack/send_message",

@@ -1,19 +1,22 @@
+import os
+from typing import Any
+
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
-from governos.parser import CodeParser
+
 from governos.graph import DependencyGraph
-import os
-from typing import Dict, Any
+from governos.parser import CodeParser
 
 app = FastAPI()
+
 
 class AnalyzeRequest(BaseModel):
     directory: str
 
 
 @app.post("/api/v1/analyze")
-def analyze(req: AnalyzeRequest) -> Dict[str, Any]:
+def analyze(req: AnalyzeRequest) -> dict[str, Any]:
     parser = CodeParser()
     graph = DependencyGraph()
 
@@ -28,7 +31,11 @@ def analyze(req: AnalyzeRequest) -> Dict[str, Any]:
                 graph.add_edges(edges)
                 total_nodes += len(nodes)
 
-    return {"status": "success", "data": {"nodes": total_nodes, "edges": len(graph.graph.edges())}}
+    return {
+        "status": "success",
+        "data": {"nodes": total_nodes, "edges": len(graph.graph.edges())},
+    }
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

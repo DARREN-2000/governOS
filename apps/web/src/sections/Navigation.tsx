@@ -1,31 +1,33 @@
-import { useState, useEffect } from 'react'
-import { motion, useScroll } from 'framer-motion'
-import { Button } from '@/components/Button'
-import { Menu, X, Hexagon } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { motion, useScroll } from "framer-motion";
+import { Button } from "@/components/Button";
+import { Menu, X, Hexagon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { scrollY } = useScroll()
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
 
   useEffect(() => {
-    return scrollY.on('change', (latest) => {
-      setIsScrolled(latest > 50)
-    })
-  }, [scrollY])
+    return scrollY.on("change", (latest) => {
+      setIsScrolled(latest > 50);
+    });
+  }, [scrollY]);
 
   const navLinks = [
-    { name: 'Product', href: '/#product', isInternal: false },
-    { name: 'Solutions', href: '/#solutions', isInternal: false },
-    { name: 'Playground', href: '/playground', isInternal: true },
-    { name: 'Dashboard', href: '/dashboard', isInternal: true },
-  ]
+    { name: "Product", href: "/#product", isInternal: false },
+    { name: "Solutions", href: "/#solutions", isInternal: false },
+    { name: "Playground", href: "/playground", isInternal: true },
+    { name: "Dashboard", href: "/dashboard", isInternal: true },
+  ];
 
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/60 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'
+        isScrolled
+          ? "bg-background/60 backdrop-blur-xl border-b border-white/5"
+          : "bg-transparent"
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -33,7 +35,6 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
-
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center gap-2">
@@ -44,7 +45,7 @@ export function Navigation() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {navLinks.map((link) =>
               link.isInternal ? (
                 <Link
                   key={link.name}
@@ -61,13 +62,16 @@ export function Navigation() {
                 >
                   {link.name}
                 </a>
-              )
-            ))}
+              ),
+            )}
           </nav>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              to="/login"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
               Log in
             </Link>
             <Link to="/dashboard">
@@ -83,7 +87,11 @@ export function Navigation() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 text-muted-foreground hover:text-foreground"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -93,7 +101,7 @@ export function Navigation() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-b border-border px-4 pt-2 pb-6 space-y-4">
           <nav className="flex flex-col gap-4">
-            {navLinks.map((link) => (
+            {navLinks.map((link) =>
               link.isInternal ? (
                 <Link
                   key={link.name}
@@ -112,8 +120,8 @@ export function Navigation() {
                 >
                   {link.name}
                 </a>
-              )
-            ))}
+              ),
+            )}
           </nav>
           <div className="flex flex-col gap-2 pt-4 border-t border-border">
             <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
@@ -122,13 +130,11 @@ export function Navigation() {
               </Button>
             </Link>
             <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button className="w-full justify-center">
-                Get Started
-              </Button>
+              <Button className="w-full justify-center">Get Started</Button>
             </Link>
           </div>
         </div>
       )}
     </motion.header>
-  )
+  );
 }

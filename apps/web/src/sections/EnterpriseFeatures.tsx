@@ -1,30 +1,34 @@
-import { motion } from 'framer-motion'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/Card'
-import { Building2, Users, Network, Globe } from 'lucide-react'
+import { motion } from "framer-motion";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/Card";
+import { Building2, Users, Network, Globe } from "lucide-react";
 
 export function EnterpriseFeatures() {
   const features = [
     {
-      title: 'Multi-Tenant Architecture',
-      description: 'Strict logical isolation between teams, projects, and environments with scoped memory.',
-      icon: Building2
+      title: "Multi-Tenant Architecture",
+      description:
+        "Strict logical isolation between teams, projects, and environments with scoped memory.",
+      icon: Building2,
     },
     {
-      title: 'Custom Integrations',
-      description: 'Build proprietary action plugins for internal APIs using our typed Action SDK.',
-      icon: Network
+      title: "Custom Integrations",
+      description:
+        "Build proprietary action plugins for internal APIs using our typed Action SDK.",
+      icon: Network,
     },
     {
-      title: 'SSO & Identity',
-      description: 'SAML, OIDC, and SCIM provisioning for seamless identity lifecycle management.',
-      icon: Users
+      title: "SSO & Identity",
+      description:
+        "SAML, OIDC, and SCIM provisioning for seamless identity lifecycle management.",
+      icon: Users,
     },
     {
-      title: 'VPC Peering',
-      description: 'Deploy GovernOS agents directly within your secure network boundaries.',
-      icon: Globe
-    }
-  ]
+      title: "VPC Peering",
+      description:
+        "Deploy GovernOS agents directly within your secure network boundaries.",
+      icon: Globe,
+    },
+  ];
 
   return (
     <section className="py-24 bg-muted/30">
@@ -34,7 +38,8 @@ export function EnterpriseFeatures() {
             Enterprise Ready
           </h2>
           <p className="text-lg text-muted-foreground">
-            Capabilities designed for large organizations with complex compliance requirements.
+            Capabilities designed for large organizations with complex
+            compliance requirements.
           </p>
         </div>
 
@@ -53,7 +58,9 @@ export function EnterpriseFeatures() {
                   <CardTitle className="text-lg">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -61,5 +68,5 @@ export function EnterpriseFeatures() {
         </div>
       </div>
     </section>
-  )
+  );
 }

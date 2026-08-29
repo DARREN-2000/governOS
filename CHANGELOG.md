@@ -8,14 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Comprehensive enterprise-grade documentation structure.
-- Professional Mermaid diagrams integrated directly into the README.
-- Upgraded security posture validating `MAX_FILE_SIZE` on parsing.
-- Added strict multi-tenant context documentation.
+
+- Comprehensive enterprise-grade documentation suite.
+- GitHub community templates (Issues, PRs).
+- New `CODEOWNERS` and `SECURITY.md` policies.
 
 ### Changed
-- Rebranded repository to project "GovernOS".
-- Enforced `pnpm` exclusively for frontend package management.
 
-### Fixed
-- Addressed Pydantic `model_dump()` performance bottlenecks in graph ingestion loops.
+- Refactored `README.md` to highlight enterprise capabilities and deployment options.
+
+## [1.0.0] - Initial Release
+
+### Added
+
+- Core Proxy API built with FastAPI and asyncpg.
+- Redis-based exact caching and rate-limiting.
+- Multi-provider fallback routing logic (OpenAI, Anthropic, Azure).
+- PostgreSQL integration for persistent usage logging.
+- Next.js Admin Dashboard for tenant and key management.
+- Docker Compose stack for rapid local deployment.
+- Base Kubernetes manifests for production deployment.
+- Prometheus metrics endpoint (`/metrics`).

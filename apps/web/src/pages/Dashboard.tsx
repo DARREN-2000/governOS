@@ -60,7 +60,8 @@ function deriveRiskLevel(steps: { action: string; description: string }[]): stri
 
 export function Dashboard() {
   const [intent, setIntent] = useState("");
-  const [openRouterApiKey, setOpenRouterApiKey] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [provider, setProvider] = useState("openrouter");
   const [workflow, setWorkflow] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -85,7 +86,11 @@ export function Dashboard() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ description: intent, openRouterApiKey: openRouterApiKey.trim() || undefined }),
+            body: JSON.stringify({ 
+              description: intent, 
+              apiKey: apiKey.trim() || undefined,
+              provider: provider 
+            }),
           },
         );
         const data = await response.json();
@@ -275,13 +280,23 @@ export function Dashboard() {
                 <Sparkles className="mr-3 text-indigo-400" size={20} />
                 Natural Language Intent
               </h2>
-              <div className="mb-4">
+              <div className="mb-4 flex space-x-4">
+                <select
+                  value={provider}
+                  onChange={(e) => setProvider(e.target.value)}
+                  className="bg-black/20 text-slate-300 p-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm"
+                >
+                  <option value="openrouter">OpenRouter (Default)</option>
+                  <option value="mistral">Mistral API</option>
+                  <option value="nvidia">NVIDIA NIM</option>
+                  <option value="grok">Grok (X.ai)</option>
+                </select>
                 <input
                   type="password"
-                  placeholder="OpenRouter API Key (Optional BYOK)"
-                  value={openRouterApiKey}
-                  onChange={(e) => setOpenRouterApiKey(e.target.value)}
-                  className="w-full bg-black/20 text-slate-300 p-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm"
+                  placeholder="Optional BYOK API Key"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="flex-1 bg-black/20 text-slate-300 p-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm"
                 />
               </div>
               <div

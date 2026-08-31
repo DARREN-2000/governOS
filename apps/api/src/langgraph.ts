@@ -48,25 +48,59 @@ const PlanSchema = z.object({
 
 import { RunnableConfig } from "@langchain/core/runnables";
 
-// Initialize LLM (OpenRouter API)
-const getLLM = (overrideKey?: string) => {
+// Initialize LLM based on Provider
+const getLLM = (provider?: string, overrideKey?: string) => {
+  const selectedProvider = provider || "openrouter";
+
+  if (selectedProvider === "nvidia") {
+    const key = overrideKey || process.env.NVIDIA_API_KEY;
+    if (!key) return null;
+    return new ChatOpenAI({
+      modelName: "nvidia/llama-3.1-nemotron-70b-instruct", // latest active Nvidia model
+      openAIApiKey: key,
+      configuration: { baseURL: "https://integrate.api.nvidia.com/v1" },
+      temperature: 0,
+    });
+  }
+  
+  if (selectedProvider === "mistral") {
+    const key = overrideKey || process.env.MISTRAL_API_KEY;
+    if (!key) return null;
+    return new ChatOpenAI({
+      modelName: "open-mistral-nemo",
+      openAIApiKey: key,
+      configuration: { baseURL: "https://api.mistral.ai/v1" },
+      temperature: 0,
+    });
+  }
+
+  if (selectedProvider === "grok") {
+    const key = overrideKey || process.env.GROK_API_KEY;
+    if (!key) return null;
+    return new ChatOpenAI({
+      modelName: "grok-beta",
+      openAIApiKey: key,
+      configuration: { baseURL: "https://api.x.ai/v1" },
+      temperature: 0,
+    });
+  }
+
+  // Default: OpenRouter
   const key = overrideKey || process.env.OPENROUTER_API_KEY;
   if (!key) return null;
-
   return new ChatOpenAI({
     modelName: "meta-llama/llama-3-8b-instruct:free",
     openAIApiKey: key,
-    configuration: {
-      baseURL: "https://openrouter.ai/api/v1",
-    },
+    configuration: { baseURL: "https://openrouter.ai/api/v1" },
     temperature: 0,
   });
 };
 
 // Node 1: Planner Agent
 async function plannerAgent(state: GovernOSState, config?: RunnableConfig) {
-  const overrideKey = config?.configurable?.openrouter_api_key;
-  const llm = getLLM(overrideKey);
+  const overrideKey = config?.configurable?.api_key;
+  const provider = config?.configurable?.provider;
+  const llm = getLLM(provider, overrideKey);
 
   if (!llm) {
     return {

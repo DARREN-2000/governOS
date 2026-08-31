@@ -60,7 +60,7 @@ function deriveRiskLevel(steps: { action: string; description: string }[]): stri
 
 export function Dashboard() {
   const [intent, setIntent] = useState("");
-  const [mistralApiKey, setMistralApiKey] = useState("");
+  const [openRouterApiKey, setOpenRouterApiKey] = useState("");
   const [workflow, setWorkflow] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -85,7 +85,7 @@ export function Dashboard() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ description: intent, mistralApiKey: mistralApiKey.trim() || undefined }),
+            body: JSON.stringify({ description: intent, openRouterApiKey: openRouterApiKey.trim() || undefined }),
           },
         );
         const data = await response.json();
@@ -278,9 +278,9 @@ export function Dashboard() {
               <div className="mb-4">
                 <input
                   type="password"
-                  placeholder="Mistral API Key (Optional BYOK)"
-                  value={mistralApiKey}
-                  onChange={(e) => setMistralApiKey(e.target.value)}
+                  placeholder="OpenRouter API Key (Optional BYOK)"
+                  value={openRouterApiKey}
+                  onChange={(e) => setOpenRouterApiKey(e.target.value)}
                   className="w-full bg-black/20 text-slate-300 p-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm"
                 />
               </div>

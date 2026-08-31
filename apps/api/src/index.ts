@@ -76,7 +76,7 @@ app.post("/api/v1/login", async (req, res) => {
 });
 
 app.post("/api/v1/intents", authenticate, async (req, res) => {
-  const { description, mistralApiKey } = req.body;
+  const { description, openRouterApiKey } = req.body;
   const user = (req as any).user;
 
   if (!description) {
@@ -86,7 +86,7 @@ app.post("/api/v1/intents", authenticate, async (req, res) => {
 
   try {
     const thread_id = `thread_${Math.random().toString(36).substr(2, 9)}`;
-    const config = { configurable: { thread_id, mistral_api_key: mistralApiKey } };
+    const config = { configurable: { thread_id, openrouter_api_key: openRouterApiKey } };
 
     // This will start the LangGraph workflow. It runs Planner -> Security -> stops at Interrupt
     await import("./langgraph.js").then(m => m.orchestratorApp.invoke({ intent: description }, config));

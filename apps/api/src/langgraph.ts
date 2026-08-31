@@ -48,16 +48,16 @@ const PlanSchema = z.object({
 
 import { RunnableConfig } from "@langchain/core/runnables";
 
-// Initialize LLM (Mistral API)
+// Initialize LLM (OpenRouter API)
 const getLLM = (overrideKey?: string) => {
-  const key = overrideKey || process.env.MISTRAL_API_KEY;
+  const key = overrideKey || process.env.OPENROUTER_API_KEY;
   if (!key) return null;
 
   return new ChatOpenAI({
-    modelName: "open-mistral-nemo",
+    modelName: "meta-llama/llama-3-8b-instruct:free",
     openAIApiKey: key,
     configuration: {
-      baseURL: "https://api.mistral.ai/v1",
+      baseURL: "https://openrouter.ai/api/v1",
     },
     temperature: 0,
   });
@@ -65,7 +65,7 @@ const getLLM = (overrideKey?: string) => {
 
 // Node 1: Planner Agent
 async function plannerAgent(state: GovernOSState, config?: RunnableConfig) {
-  const overrideKey = config?.configurable?.mistral_api_key;
+  const overrideKey = config?.configurable?.openrouter_api_key;
   const llm = getLLM(overrideKey);
 
   if (!llm) {

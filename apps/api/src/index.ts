@@ -85,54 +85,17 @@ app.post("/api/v1/intents", authenticate, async (req, res) => {
   }
 
   try {
-    let planSteps = [];
-    const openrouterKey = process.env.OPENROUTER_API_KEY;
+    const thread_id = `thread_${Math.random().toString(36).substr(2, 9)}`;
+    const config = { configurable: { thread_id } };
 
-    if (openrouterKey) {
-      try {
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${openrouterKey}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model: "meta-llama/llama-3-8b-instruct:free", // 100% free model, change if desired
-            messages: [
-              {
-                role: "system",
-                content: `You are an AI orchestrator. The user will give you a goal.
-You must break this goal down into a sequence of execution steps.
-Output ONLY a raw JSON array of objects. Do not include markdown formatting like \`\`\`json.
-Each object must have exactly these keys:
-- "id": a unique step id (e.g., "step_1")
-- "action": a short verb for the action (e.g., "web_search", "db_write", "api_call", "analyze")
-- "description": a clear description of what the step does`
-              },
-              { role: "user", content: description }
-            ]
-          })
-        });
-
-        const data = await response.json();
-        const rawContent = data.choices[0].message.content.trim();
-        
-        // Strip markdown code blocks just in case the LLM ignores instructions
-        const cleanJson = rawContent.replace(/```json/gi, "").replace(/```/g, "").trim();
-        planSteps = JSON.parse(cleanJson);
-
-      } catch (e) {
-        console.error("OpenRouter API failed, using fallback plan", e);
-        planSteps = [
-          { id: "step_1", action: "error", description: "Dynamic planning failed. Check API Key or LLM output." }
-        ];
-      }
-    } else {
-      console.warn("No OPENROUTER_API_KEY found, using fallback plan");
-      planSteps = [
-        { id: "step_1", action: "execute", description: `Execute fallback for: ${description}` }
-      ];
-    }
+    // This will start the LangGraph workflow. It runs Planner -> Security -> stops at Interrupt
+    await import("./langgraph.js").then(m => m.orchestratorApp.invoke({ intent: description }, config));
+    
+    // Get the paused state
+    const currentState = await import("./langgraph.js").then(m => m.orchestratorApp.getState(config));
+    
+    const planSteps = currentState.values.planSteps || [];
+    const riskLevel = currentState.values.riskLevel || "Unknown";
 
     const createWorkflowTx = db.transaction(() => {
       const intentRes = db
@@ -149,7 +112,7 @@ Each object must have exactly these keys:
     const wfId = createWorkflowTx();
     const wfIdStr = wfId.toString();
 
-    // Start Temporal Workflow
+    // Start Temporal Workflow in waiting state (optional, or just do it on approve)
     if (temporalClient) {
       await temporalClient.workflow.start(intentExecutionWorkflow, {
         args: [wfIdStr, description],
@@ -159,24 +122,39 @@ Each object must have exactly these keys:
     }
 
     res.json({
-      message: "Workflow planned",
+      message: "Workflow planned via LangGraph",
       plan: {
-        id: `wf_${Math.random().toString(36).substr(2, 9)}`,
+        id: `wf_${thread_id}`, // Store thread_id to resume later
         db_id: wfIdStr,
         steps: planSteps,
+        riskLevel: riskLevel, // Now coming natively from our Security Agent
         status: "planned",
       },
+      thread_id: thread_id, // Pass to frontend for resumption
     });
   } catch (e) {
-    console.error("Workflow planning failed", e);
-    res.status(500).json({ error: "Failed to plan workflow" });
+    console.error("Workflow planning via LangGraph failed", e);
+    res.status(500).json({ error: "Failed to plan workflow via LangGraph" });
   }
 });
 
 app.post("/api/v1/intents/:id/approve", authenticate, async (req, res) => {
   const { id } = req.params;
+  const { thread_id } = req.body; // Expect the frontend to pass back the thread_id
 
   try {
+    if (thread_id) {
+      const config = { configurable: { thread_id } };
+      const { Command } = await import("@langchain/langgraph");
+      const { orchestratorApp } = await import("./langgraph.js");
+      
+      // Resume the LangGraph thread to trigger the executor node logic
+      await orchestratorApp.invoke(
+        new Command({ resume: { approved: true } }),
+        config
+      );
+    }
+
     if (temporalClient) {
       const handle = temporalClient.workflow.getHandle(`intent-workflow-${id}`);
       await handle.signal("approve");
@@ -198,7 +176,7 @@ app.post("/api/v1/intents/:id/approve", authenticate, async (req, res) => {
       });
     }
   } catch (e) {
-    console.error("Temporal signal failed", e);
+    console.error("Workflow approval failed", e);
     res.status(500).json({ error: "Failed to approve workflow" });
   }
 });

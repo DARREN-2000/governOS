@@ -96,13 +96,15 @@ export function Dashboard() {
               icon: step.icon || getIconForAction(step.action || ""),
             }),
           );
-          const riskLevel = deriveRiskLevel(data.plan.steps || []);
+          const riskLevel = data.plan.riskLevel || deriveRiskLevel(data.plan.steps || []);
           setWorkflow({
             ...data.plan,
             steps: normalizedSteps,
             riskLevel,
+            thread_id: data.thread_id,
           });
         } else {
+          alert("API Error: " + (data.error || "Unknown error"));
           console.error(data.error);
         }
       } catch (err) {
@@ -198,8 +200,10 @@ export function Dashboard() {
           {
             method: "POST",
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
+            body: JSON.stringify({ thread_id: workflow.thread_id }),
           },
         );
         if (response.ok) {

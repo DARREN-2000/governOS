@@ -46,13 +46,13 @@ const PlanSchema = z.object({
   ).max(10),
 });
 
-// Initialize LLM (OpenRouter Llama 3)
+// Initialize LLM (NVIDIA NIM / Llama 3.1 70B)
 const getLLM = () => {
   return new ChatOpenAI({
-    modelName: "meta-llama/llama-3-8b-instruct:free",
-    openAIApiKey: process.env.OPENROUTER_API_KEY || "missing",
+    modelName: "meta/llama-3.1-70b-instruct",
+    openAIApiKey: process.env.NVIDIA_API_KEY || "missing",
     configuration: {
-      baseURL: "https://openrouter.ai/api/v1",
+      baseURL: "https://integrate.api.nvidia.com/v1",
     },
     temperature: 0,
   });
@@ -60,7 +60,7 @@ const getLLM = () => {
 
 // Node 1: Planner Agent
 async function plannerAgent(state: GovernOSState) {
-  if (!process.env.OPENROUTER_API_KEY) {
+  if (!process.env.NVIDIA_API_KEY) {
     return {
       planSteps: [
         { id: "step_1", action: "execute", description: `Fallback execution for: ${state.intent}` }

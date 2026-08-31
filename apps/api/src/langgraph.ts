@@ -46,11 +46,16 @@ const PlanSchema = z.object({
   ).max(10),
 });
 
+import { RunnableConfig } from "@langchain/core/runnables";
+
 // Initialize LLM (Mistral API)
-const getLLM = () => {
+const getLLM = (overrideKey?: string) => {
+  const key = overrideKey || process.env.MISTRAL_API_KEY;
+  if (!key) return null;
+
   return new ChatOpenAI({
     modelName: "open-mistral-nemo",
-    openAIApiKey: process.env.MISTRAL_API_KEY || "missing",
+    openAIApiKey: key,
     configuration: {
       baseURL: "https://api.mistral.ai/v1",
     },
@@ -59,8 +64,11 @@ const getLLM = () => {
 };
 
 // Node 1: Planner Agent
-async function plannerAgent(state: GovernOSState) {
-  if (!process.env.MISTRAL_API_KEY) {
+async function plannerAgent(state: GovernOSState, config?: RunnableConfig) {
+  const overrideKey = config?.configurable?.mistral_api_key;
+  const llm = getLLM(overrideKey);
+
+  if (!llm) {
     return {
       planSteps: [
         { id: "step_1", action: "execute", description: `Fallback execution for: ${state.intent}` }
@@ -69,7 +77,6 @@ async function plannerAgent(state: GovernOSState) {
     };
   }
 
-  const llm = getLLM();
   const structuredLlm = llm.withStructuredOutput(PlanSchema, { name: "execution_plan" });
 
   try {

@@ -60,6 +60,7 @@ function deriveRiskLevel(steps: { action: string; description: string }[]): stri
 
 export function Dashboard() {
   const [intent, setIntent] = useState("");
+  const [mistralApiKey, setMistralApiKey] = useState("");
   const [workflow, setWorkflow] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -84,7 +85,7 @@ export function Dashboard() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            body: JSON.stringify({ description: intent }),
+            body: JSON.stringify({ description: intent, mistralApiKey: mistralApiKey.trim() || undefined }),
           },
         );
         const data = await response.json();
@@ -274,6 +275,15 @@ export function Dashboard() {
                 <Sparkles className="mr-3 text-indigo-400" size={20} />
                 Natural Language Intent
               </h2>
+              <div className="mb-4">
+                <input
+                  type="password"
+                  placeholder="Mistral API Key (Optional BYOK)"
+                  value={mistralApiKey}
+                  onChange={(e) => setMistralApiKey(e.target.value)}
+                  className="w-full bg-black/20 text-slate-300 p-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm"
+                />
+              </div>
               <div
                 className={`relative rounded-2xl transition-all duration-300 ${focused ? "ring-2 ring-indigo-500/50 shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)]" : "ring-1 ring-white/10"}`}
               >

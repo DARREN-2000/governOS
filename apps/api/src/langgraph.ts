@@ -56,10 +56,11 @@ const getLLM = (provider?: string, overrideKey?: string) => {
     const key = overrideKey || process.env.NVIDIA_API_KEY;
     if (!key) return null;
     return new ChatOpenAI({
-      modelName: "nvidia/llama-3.1-nemotron-70b-instruct", // latest active Nvidia model
+      modelName: "nvidia/llama-3.1-nemotron-70b-instruct",
       openAIApiKey: key,
       configuration: { baseURL: "https://integrate.api.nvidia.com/v1" },
       temperature: 0,
+      maxTokens: 1000,
     });
   }
   
@@ -71,6 +72,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
       openAIApiKey: key,
       configuration: { baseURL: "https://api.mistral.ai/v1" },
       temperature: 0,
+      maxTokens: 1000,
     });
   }
 
@@ -82,6 +84,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
       openAIApiKey: key,
       configuration: { baseURL: "https://api.x.ai/v1" },
       temperature: 0,
+      maxTokens: 1000,
     });
   }
 
@@ -89,10 +92,11 @@ const getLLM = (provider?: string, overrideKey?: string) => {
   const key = overrideKey || process.env.OPENROUTER_API_KEY;
   if (!key) return null;
   return new ChatOpenAI({
-    modelName: "meta-llama/llama-3-8b-instruct:free",
+    modelName: "meta-llama/llama-3.1-8b-instruct",
     openAIApiKey: key,
     configuration: { baseURL: "https://openrouter.ai/api/v1" },
     temperature: 0,
+    maxTokens: 1000,
   });
 };
 

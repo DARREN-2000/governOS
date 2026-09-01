@@ -57,7 +57,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
     if (!key) return null;
     return new ChatOpenAI({
       modelName: "nvidia/llama-3.1-nemotron-70b-instruct",
-      openAIApiKey: key,
+      apiKey: key,
       configuration: { baseURL: "https://integrate.api.nvidia.com/v1" },
       temperature: 0,
       maxTokens: 1000,
@@ -69,7 +69,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
     if (!key) return null;
     return new ChatOpenAI({
       modelName: "open-mistral-nemo",
-      openAIApiKey: key,
+      apiKey: key,
       configuration: { baseURL: "https://api.mistral.ai/v1" },
       temperature: 0,
       maxTokens: 1000,
@@ -81,7 +81,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
     if (!key) return null;
     return new ChatOpenAI({
       modelName: "grok-beta",
-      openAIApiKey: key,
+      apiKey: key,
       configuration: { baseURL: "https://api.x.ai/v1" },
       temperature: 0,
       maxTokens: 1000,
@@ -93,7 +93,7 @@ const getLLM = (provider?: string, overrideKey?: string) => {
   if (!key) return null;
   return new ChatOpenAI({
     modelName: "meta-llama/llama-3.1-8b-instruct",
-    openAIApiKey: key,
+    apiKey: key,
     configuration: { baseURL: "https://openrouter.ai/api/v1" },
     temperature: 0,
     maxTokens: 1000,
